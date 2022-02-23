@@ -19,8 +19,23 @@
     - README.md：このプロジェクトについての概要
     - sample_code：PHPのコードを管理するディレクトリ
         - XAMPPのhtdocs内からシンボリックリンクを張る
+        - /Applications/XAMPP/htdocs/sample_code -> /Users/DAIKI/Desktop/PHP_Sample_Project/sample_code
     - app_image：メモアプリのイメージ図
 ```
+
+## データベースの定義
+
+- データベース名：sample_project
+- テーブル名：posts
+
+|カラム名|データ型|null許可|カラムの説明|
+|---|---|---|---|
+|id|INT|not null|主キー（自動採番）|
+|title|VARCHAR（31）|not null|レコードのタイトル|
+|content|text|not null|レコードの内容|
+|created_at|datetime|not null|レコードの作成日時|
+|updated_at|datetime|not null|レコードの更新日時|
+
 
 ## 参考
 
