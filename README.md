@@ -2,7 +2,7 @@
 
 ## 目的
 
-簡易的なメモアプリの作成
+簡易的なToDoアプリの作成
 
 ## 予定
 
@@ -20,6 +20,7 @@
     - sample_code：PHPのコードを管理するディレクトリ
         - XAMPPのhtdocs内からシンボリックリンクを張る
         - /Applications/XAMPP/htdocs/sample_code -> /Users/DAIKI/Desktop/PHP_Sample_Project/sample_code
+        - 不具合が起きているので、この構成ではできていない
     - app_image：メモアプリのイメージ図
 ```
 
