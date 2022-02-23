@@ -4,13 +4,11 @@
 
 簡易的なToDoアプリの作成
 
-## 予定
+## ページのイメージ図
 
-2/23,24で完成まで漕ぎつける
-
-## アプリのイメージ図
-
-[イメージ図](./image/app_image.jpg)
+[イメージ図（index.php）](./image/index.jpg)<br>
+[イメージ図（view.php）](./image/view.jpg)<br>
+[イメージ図（edit_check.php）](./image/edit_check.jpg)<br>
 
 ## プロジェクトのディレクトリ構成
 
@@ -36,7 +34,6 @@
 |content|text|not null|レコードの内容|
 |created_at|datetime|not null|レコードの作成日時|
 |updated_at|datetime|not null|レコードの更新日時|
-
 
 ## 参考
 

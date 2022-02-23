@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="index.css">
     <title>Index Page</title>
 </head>
 <body>
@@ -48,23 +49,22 @@
                 // 一覧の表示
                 while(true){
                     // レコードの取得
-                    $rec==$stmt->fetch(PDO::FETCH_ASSOC);
+                    $rec=$stmt->fetch(PDO::FETCH_ASSOC);
                     if(!$rec){
                         break;
                     }else{
-                        print '<div class="list_item">'.$rec["title"]."</div>";
+                        // タイトルのみを表示
+                        print '<div class="list_item">';
+                        print '<a href="view.php?id='.$rec["id"].'">'.$rec["title"]."</a>";
+                        print '</div>';
                     }
                 }
             }catch(Exception $e){
-                print "不具合が発生しております。<br>";
-                print "原因は".$e->getMessage()."です";
+                print "以下の不具合が発生しております。<br>";
+                print $e->getMessage();
                 exit();
             }
             ?>
-        </div>
-        <div id="preview">
-            <!-- 選択しているタスクの内容を表示 -->
-            <!-- 編集の完了状態を示すボタンも右下に設置 -->
         </div>
     </main>
     <footer>
