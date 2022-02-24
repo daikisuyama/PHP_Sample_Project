@@ -32,14 +32,31 @@
             <!-- ここは後々ソート順にも依存しそう -->
             <?php
             require_once "functions.php";
+            // page_index：リスト一覧の何ページ目か（1-indexed）
+            // 指定ない場合は1
+            // todo:ないページを指定した時
+            $page_index=$_GET["page"];
+            if(is_null($_GET["page"])){
+                $page_index=1;
+            }
             try{
                 // データベースへの接続
                 $dbh=db_access();
+                
+                // SQL文の実行（全数取得、item_sum）
+                $sql_1="SELECT COUNT(*) FROM posts";
+                $stmt_1=$dbh->prepare($sql_1);
+                $stmt_1->execute();
+                // 次行の最初のカラムを返す
+                $item_sum=$stmt_1->fetchColumn();
 
-                // SQL文の実行
-                $sql="SELECT id,title,content,created_at,updated_at FROM posts WHERE 1";
-                $stmt=$dbh->prepare($sql);
-                $stmt->execute();
+                // SQL文の実行（必要な件数分取得）
+                $sql_2="SELECT id,title,content,created_at,updated_at FROM posts LIMIT ?,?";
+                $stmt_2=$dbh->prepare($sql_2);
+                // page_item_num：ページに表示する件数
+                $page_item_num=min(5,$item_sum-5*($page_index-1));
+                $data=[5*($page_index-1),$page_item_num];
+                $stmt_2->execute($data);
 
                 // データベースからの切断
                 $dbh=null;
@@ -47,7 +64,7 @@
                 // 一覧の表示
                 while(true){
                     // レコードの取得
-                    $rec=$stmt->fetch(PDO::FETCH_ASSOC);
+                    $rec=$stmt_2->fetch(PDO::FETCH_ASSOC);
                     if(!$rec){
                         break;
                     }else{
@@ -73,6 +90,8 @@
     </main>
     <footer>
         <!-- ページング機能 -->
+        <!-- ページごとにクエリを走らせる（件数少ないし妥協） -->
+
     </footer>
 </body>
 </html>
