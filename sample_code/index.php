@@ -21,9 +21,7 @@
         <form action="create.php">
             <!-- ボタンを押すと未入力の状態で作成 -->
             <!-- 押した際にソート順は更新日時順になる -->
-            <button type="submit">
-                作成
-            </button>
+            <button type="submit">作成</button>
         </form>
     </header>
     <main>
@@ -53,10 +51,16 @@
                     if(!$rec){
                         break;
                     }else{
-                        // タイトルのみを表示
+                        $item_id=$rec["id"];
+                        $item_title=$rec["title"];
+                        // タイトルと削除ボタンを表示
                         print '<div class="list_item">';
-                        print '<a href="view.php?id='.$rec["id"].'">'.$rec["title"]."</a>";
-                        print '</div>';
+                        print '<a href="view.php?id='.$item_id.'">'.$item_title."</a>";
+                        // 削除（確認ダイアログ）
+                        print '<form method="POST" action="delete_confirm.php" onsubmit="return window.confirm('."'本当に削除しますか？'".')">';
+                        print '<input type="hidden" name="id" value="'.$item_id.'">';
+                        print '<input type="submit" value="削除">';
+                        print '</form>';
                     }
                 }
             }catch(Exception $e){

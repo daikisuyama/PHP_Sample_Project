@@ -9,18 +9,23 @@
     <title>View Page</title>
 </head>
 <body>
+    <?php
+    // GETパラメータ受け取り
+    $item_id=$_GET["id"];
+    ?>
     <header>
         <a href="index.php">一覧へ</a>
-        <input type="submit" value="削除">
+        <!-- 削除（確認ダイアログ） -->
+        <form method="POST" action="delete_confirm.php" onsubmit='return window.confirm("本当に削除しますか？")'>
+            <input type="hidden" name="id" value="<?php print $item_id ?>">
+            <input type="submit" value="削除">
+        </form>
     </header>
     <main>
         <!-- ToDoリストのアイテムの情報を取得 -->
         <?php
         require_once "functions.php";
         try{
-            // GETパラメータ受け取り
-            $item_id=$_GET["id"];
-
             // データベースへの接続
             $dbh=db_access();
 
@@ -52,7 +57,6 @@
             <textarea name="content"><?php print $item_content?></textarea>
             <input type="hidden" name="id" value="<?php print $item_id ?>">
             <input type="hidden" name="created_at" value="<?php print $item_created_at ?>">
-            <input type="hidden" name="updated_at" value="<?php print $item_updated_at ?>">
             <input type="submit" value="完了">
         </form>
     </main>
