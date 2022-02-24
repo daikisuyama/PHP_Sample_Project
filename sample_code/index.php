@@ -55,7 +55,11 @@
                 $stmt_2=$dbh->prepare($sql_2);
                 // page_item_num：ページに表示する件数
                 $page_item_num=min(5,$item_sum-5*($page_index-1));
-                $data=[5*($page_index-1),$page_item_num];
+                // 変数をバインドする際にexecute関数にarrayで渡すと文字列に暗黙的に変換される
+                // 参照：https://www.php.net/manual/ja/pdostatement.execute.php
+                // bindParam関数で型を指定してやると解決
+                $stmt_2->bindParam(1,5*($page_index-1),PDO::PARAM_INT);
+                $stmt_2->bindParam(1,$page_item_num,PDO::PARAM_INT);
                 $stmt_2->execute($data);
 
                 // データベースからの切断
