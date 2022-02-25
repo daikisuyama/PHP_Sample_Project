@@ -15,8 +15,17 @@
     </script>
 </head>
 <body>
+    <?php
+    // GETパラメータ受け取り
+    // page_index：検索一覧の何ページ目か（1-indexed）
+    $page_index=$_GET["page"];
+    // 指定ない場合は1
+    if(is_null($_GET["page"])){
+        $page_index=1;
+    }
+    ?>
     <h1>ToDo List</h1>
-    <header>
+    <div>
         <!-- ソート用の選択肢、未実装 -->
         <form action="sort.php">
             <select>
@@ -32,19 +41,12 @@
         <!-- 検索 -->
         <!-- 時間ないので、文字列として一致するかでやる -->
         <input type="button" value="検索" onclick="search_dialog()">
-    </header>
+    </div>
     <main>
         <div id="list">
             <!-- リストの一覧を表示（最大5件） -->
             <?php
             require_once "functions.php";
-            // page_index：リスト一覧の何ページ目か（1-indexed）
-            // 指定ない場合は1
-            // todo:ないページを指定した時
-            $page_index=$_GET["page"];
-            if(is_null($_GET["page"])){
-                $page_index=1;
-            }
             try{
                 // データベースへの接続
                 $dbh=db_access();
@@ -59,6 +61,17 @@
                 // page_num：合計のページ数
                 $page_num=(int)ceil($item_sum/$page_item_max);
 
+                if($page_num==0){
+                    // 登録されているToDoがない場合
+                    print "登録されているToDoがありません。<br>";
+                }elseif($page_index>$page_num){
+                    // 範囲外のページにアクセスしようとした場合
+                    print "存在しないページです。<br>";
+                    print '<a href="index.php">一覧へ</a>';
+                    // データベースからの切断
+                    $dbh=null;
+                    exit();
+                }
 
                 // SQL文の実行（必要な件数分取得）
                 // ページごとにクエリを走らせる（件数少ないし妥協）
@@ -94,6 +107,7 @@
                         print '<input type="hidden" name="id" value="'.$item_id.'">';
                         print '<input type="submit" value="削除">';
                         print '</form>';
+                        print '</div>';
                     }
                 }
             }catch(Exception $e){

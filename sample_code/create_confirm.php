@@ -33,9 +33,9 @@
             // データベースからの切断
             $dbh=null;
 
-            print '<a href="index.php">一覧へ</a>';
-            print '<a href="view.php?id='.$item_id.'">編集画面へ</a>';
-            print "作成が完了しました";
+            print '<a href="index.php">一覧へ</a><br>';
+            print '<a href="view.php?id='.$item_id.'">編集画面へ</a><br>';
+            print "作成が完了しました<br>";
 
         }catch(Exception $e){
             print "以下の不具合が発生しております。<br>";

@@ -7,16 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="view.css">
     <title>View Page</title>
+    <script type="text/javascript">
+        // フォームのバリデーションチェック
+        function check_dialog(){
+            let title=document.getElementById("element_title").value;
+            if(title.length>31){
+                alert("タイトルが長すぎます\n");
+                return false;
+            }else if(title===""){
+                alert("タイトルが未入力です\n");
+                return false;
+            }else{
+                return true;
+            }
+        }
+    </script>
 </head>
 <body>
-    <header>
+    <div>
         <a href="index.php">一覧へ</a>
-        <input type="submit" value="削除">
-    </header>
+    </div>
     <main>
         <!-- フォームの作成 -->
-        <form method="POST" action="create_confirm.php">
-            <input type="text" name="title" value=""></input>
+        <form method="POST" action="create_confirm.php" onsubmit="return check_dialog()">
+            <input type="text" name="title" value="" id="element_title"></input><br>
             <textarea name="content"></textarea>
             <input type="submit" value="完了">
         </form>

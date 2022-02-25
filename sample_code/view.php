@@ -7,20 +7,35 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="view.css">
     <title>View Page</title>
+    <script type="text/javascript">
+        // フォームのバリデーションチェック
+        function check_dialog(){
+            let title=document.getElementById("element_title").value;
+            if(title.length>31){
+                alert("タイトルが長すぎます\n");
+                return false;
+            }else if(title===""){
+                alert("タイトルが未入力です\n");
+                return false;
+            }else{
+                return true;
+            }
+        }
+    </script>
 </head>
 <body>
     <?php
     // GETパラメータ受け取り
     $item_id=$_GET["id"];
     ?>
-    <header>
+    <div>
         <a href="index.php">一覧へ</a>
         <!-- 削除（確認ダイアログ） -->
         <form method="POST" action="delete_confirm.php" onsubmit='return window.confirm("本当に削除しますか？")'>
             <input type="hidden" name="id" value="<?php print $item_id ?>">
             <input type="submit" value="削除">
         </form>
-    </header>
+    </div>
     <main>
         <!-- ToDoリストのアイテムの情報を取得 -->
         <?php
@@ -52,8 +67,8 @@
         ?>
 
         <!-- フォームの作成 -->
-        <form method="POST" action="edit_confirm.php">
-            <input type="text" name="title" value="<?php print $item_title?>"></input>
+        <form method="POST" action="edit_confirm.php" onsubmit="return check_dialog()">
+            <input type="text" name="title" value="<?php print $item_title?>" id="element_title"></input><br>
             <textarea name="content"><?php print $item_content?></textarea>
             <input type="hidden" name="id" value="<?php print $item_id ?>">
             <input type="hidden" name="created_at" value="<?php print $item_created_at ?>">

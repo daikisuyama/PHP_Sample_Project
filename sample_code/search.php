@@ -15,8 +15,19 @@
     </script>
 </head>
 <body>
+    <?php
+    // GETパラメータ受け取り
+    // page_index：検索一覧の何ページ目か（1-indexed）
+    $page_index=$_GET["page"];
+    // 指定ない場合は1
+    if(is_null($_GET["page"])){
+        $page_index=1;
+    }
+    // 検索ワード
+    $search_word=$get["word"];
+    ?>
     <h1>ToDo List</h1>
-    <header>
+    <div>
         <!-- ソート用の選択肢、未実装 -->
         <form action="sort.php">
             <select>
@@ -31,20 +42,12 @@
         </form>
         <!-- 検索 -->
         <input type="button" value="検索" onclick="search_dialog()">
-    </header>
+    </div>
     <main>
         <div id="list">
             <!-- 検索の一覧を表示（最大5件） -->
             <?php
             require_once "functions.php";
-            // page_index：検索一覧の何ページ目か（1-indexed）
-            // 指定ない場合は1
-            // todo:ないページを指定した時
-            $page_index=$_GET["page"];
-            if(is_null($_GET["page"])){
-                $page_index=1;
-            }
-            $search_word=$_GET["word"];
             try{
                 // データベースへの接続
                 $dbh=db_access();
@@ -54,12 +57,24 @@
                 $stmt_1=$dbh->prepare($sql_1);
                 $data=[$search_word];
                 $stmt_1->execute($data);
-                $item_sum=$stmt_1->fetchColumn(); 
+                $item_sum=$stmt_1->fetchColumn(); // 次行の最初のカラムを返す
                 // page_item_max:ページに表示する最大件数
                 $page_item_max=5;
                 // page_num：合計のページ数
                 $page_num=(int)ceil($item_sum/$page_item_max);
 
+                if($page_num==0){
+                    // 登録されているToDoがない場合
+                    print "該当するToDoがありません。<br>";
+                    print '<a href="index.php">一覧へ</a>';
+                }elseif($page_index>$page_num){
+                    // 範囲外のページにアクセスしようとした場合
+                    print "存在しないページです。<br>";
+                    print '<a href="index.php">一覧へ</a>';
+                    // データベースからの切断
+                    $dbh=null;
+                    exit();
+                }
 
                 // SQL文の実行（必要な件数分取得）
                 $sql_2="SELECT id,title,content,created_at,updated_at FROM posts WHERE title=? LIMIT ?,?";
@@ -91,6 +106,7 @@
                         print '<input type="hidden" name="id" value="'.$item_id.'">';
                         print '<input type="submit" value="削除">';
                         print '</form>';
+                        print '</div>';
                     }
                 }
             }catch(Exception $e){
