@@ -18,4 +18,75 @@ function sanitize($before){
     }
     return $after;
 }
+
+// ページング機能の作成
+function create_paging($page_index,$page_num){
+    if($page_num<=6){
+        for($i=1;$i<=$page_num;++$i){
+            if($page_index==$i){
+                print '<div class="paging_item_now">';
+            }else{
+                print '<div class="paging_item">';
+            }
+            print "<a href='index.php?page=${i}'>${i}</a>";
+            print '</div>';
+        }
+    }else{
+        if($page_index<=3){
+            for($i=1;$i<=$page_index+1;++$i){
+                if($page_index==$i){
+                    print '<div class="paging_item_now">';
+                }else{
+                    print '<div class="paging_item">';
+                }
+                print "<a href='index.php?page=${i}'>${i}</a>";
+                print '</div>';
+            }
+            print '<div class="paging_item">';
+            print "…";
+            print '</div>';
+            print '<div class="paging_item">';
+            print "<a href='index.php?page=${page_num}'>${page_num}</a>";
+            print '</div>';
+        }elseif($page_index>=$page_num-2){
+            print '<div class="paging_item">';
+            print "<a href='index.php?page=1'>1</a>";
+            print '</div>';
+            print '<div class="paging_item">';
+            print "…";
+            print '</div>';
+            for($i=$page_index-1;$i<=$page_num;++$i){
+                if($page_index==$i){
+                    print '<div class="paging_item_now">';
+                }else{
+                    print '<div class="paging_item">';
+                }
+                print "<a href='index.php?page=${i}'>${i}</a>";
+                print '</div>';
+            }
+        }else{
+            print '<div class="paging_item">';
+            print "<a href='index.php?page=1'>1</a>";
+            print '</div>';
+            print '<div class="paging_item">';
+            print "…";
+            print '</div>';
+            for($i=$page_index-1;$i<=$page_index+1;++$i){
+                if($page_index==$i){
+                    print '<div class="paging_item_now">';
+                }else{
+                    print '<div class="paging_item">';
+                }
+                print "<a href='index.php?page=${i}'>${i}</a>";
+                print '</div>';
+            }
+            print '<div class="paging_item">';
+            print "…";
+            print '</div>';
+            print '<div class="paging_item">';
+            print "<a href='index.php?page=${page_num}'>${page_num}</a>";
+            print '</div>';
+        }
+    }
+}
 ?>

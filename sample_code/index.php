@@ -7,10 +7,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="index.css">
     <title>Index Page</title>
+    <script type="text/javascript">
+        function search_dialog(){
+            let search_word=window.prompt("検索したい言葉は？","");
+            window.location.href="search.php?word="+search_word;
+        }
+    </script>
 </head>
 <body>
     <h1>ToDo List</h1>
     <header>
+        <!-- ソート用の選択肢、未実装 -->
         <form action="sort.php">
             <select>
                 <option value="id" selected>作成日時順</option>
@@ -20,8 +27,11 @@
         </form>
         <form action="create.php">
             <!-- ボタンを押すと未入力の状態で作成 -->
-            <!-- 押した際にソート順は更新日時順になる -->
             <button type="submit">作成</button>
+        </form>
+        <!-- 検索 -->
+        <form method="POST" onsubmit='return search_dialog()'>
+            <input type="submit" value="検索">
         </form>
     </header>
     <main>
@@ -47,20 +57,26 @@
                 $sql_1="SELECT COUNT(*) FROM posts";
                 $stmt_1=$dbh->prepare($sql_1);
                 $stmt_1->execute();
-                // 次行の最初のカラムを返す
-                $item_sum=$stmt_1->fetchColumn();
+                $item_sum=$stmt_1->fetchColumn(); // 次行の最初のカラムを返す
+                // page_item_max:ページに表示する最大件数
+                $page_item_max=5;
+                // page_num：合計のページ数
+                $page_num=(int)ceil($item_sum/$page_item_max);
+
 
                 // SQL文の実行（必要な件数分取得）
+                // ページごとにクエリを走らせる（件数少ないし妥協）
                 $sql_2="SELECT id,title,content,created_at,updated_at FROM posts LIMIT ?,?";
                 $stmt_2=$dbh->prepare($sql_2);
-                // page_item_num：ページに表示する件数
-                $page_item_num=min(5,$item_sum-5*($page_index-1));
+                // page_item_num：ページ（$page_index）に表示する件数
+                $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
                 // 変数をバインドする際にexecute関数にarrayで渡すと文字列に暗黙的に変換される
                 // 参照：https://www.php.net/manual/ja/pdostatement.execute.php
-                // bindParam関数で型を指定してやると解決
-                $stmt_2->bindParam(1,5*($page_index-1),PDO::PARAM_INT);
-                $stmt_2->bindParam(1,$page_item_num,PDO::PARAM_INT);
-                $stmt_2->execute($data);
+                // bindValue関数で型を指定してやると解決
+                // bindParam関数だとダメ（なんで）
+                $stmt_2->bindValue(1,$page_item_max*($page_index-1),PDO::PARAM_INT);
+                $stmt_2->bindValue(2,$page_item_num,PDO::PARAM_INT);
+                $stmt_2->execute();
 
                 // データベースからの切断
                 $dbh=null;
@@ -92,10 +108,11 @@
             ?>
         </div>
     </main>
-    <footer>
+    <footer id ="paging">
         <!-- ページング機能 -->
-        <!-- ページごとにクエリを走らせる（件数少ないし妥協） -->
-
+        <?php
+        create_paging($page_index,$page_num);
+        ?>
     </footer>
 </body>
 </html>
