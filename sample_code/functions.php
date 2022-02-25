@@ -20,7 +20,11 @@ function sanitize($before){
 }
 
 // ページング機能の作成
-function create_paging($page_index,$page_num){
+// $page_index：何ページ目か
+// $page_num：合計で何ページか
+// $page_num：今いるページ（クエリパラメータを除く）
+// $url_param：クエリパラメータを連想配列で
+function create_paging($page_index,$page_num,$page_name,$url_param){
     if($page_num<=6){
         for($i=1;$i<=$page_num;++$i){
             if($page_index==$i){
@@ -28,7 +32,8 @@ function create_paging($page_index,$page_num){
             }else{
                 print '<div class="paging_item">';
             }
-            print "<a href='index.php?page=${i}'>${i}</a>";
+            $url_param["page"]=$i;
+            print "<a href='${page_name}?".http_build_query($url_param)."'>${i}</a>";
             print '</div>';
         }
     }else{
@@ -39,18 +44,21 @@ function create_paging($page_index,$page_num){
                 }else{
                     print '<div class="paging_item">';
                 }
-                print "<a href='index.php?page=${i}'>${i}</a>";
+                $url_param["page"]=$i;
+                print "<a href='${page_name}?".http_build_query($url_param)."'>${i}</a>";
                 print '</div>';
             }
             print '<div class="paging_item">';
             print "…";
             print '</div>';
             print '<div class="paging_item">';
-            print "<a href='index.php?page=${page_num}'>${page_num}</a>";
+            $url_param["page"]=$page_num;
+            print "<a href='${page_name}?".http_build_query($url_param)."'>${page_num}</a>";
             print '</div>';
         }elseif($page_index>=$page_num-2){
             print '<div class="paging_item">';
-            print "<a href='index.php?page=1'>1</a>";
+            $url_param["page"]=1;
+            print "<a href='${page_name}?".http_build_query($url_param)."'>1</a>";
             print '</div>';
             print '<div class="paging_item">';
             print "…";
@@ -61,12 +69,14 @@ function create_paging($page_index,$page_num){
                 }else{
                     print '<div class="paging_item">';
                 }
-                print "<a href='index.php?page=${i}'>${i}</a>";
+                $url_param["page"]=$i;
+                print "<a href='${page_name}?".http_build_query($url_param)."'>${i}</a>";
                 print '</div>';
             }
         }else{
             print '<div class="paging_item">';
-            print "<a href='index.php?page=1'>1</a>";
+            $url_param["page"]=1;
+            print "<a href='${page_name}?".http_build_query($url_param)."'>1</a>";
             print '</div>';
             print '<div class="paging_item">';
             print "…";
@@ -77,14 +87,16 @@ function create_paging($page_index,$page_num){
                 }else{
                     print '<div class="paging_item">';
                 }
-                print "<a href='index.php?page=${i}'>${i}</a>";
+                $url_param["page"]=$i;
+                print "<a href='${page_name}?".http_build_query($url_param)."'>${i}</a>";
                 print '</div>';
             }
             print '<div class="paging_item">';
             print "…";
             print '</div>';
             print '<div class="paging_item">';
-            print "<a href='index.php?page=${page_num}'>${page_num}</a>";
+            $url_param["page"]=$page_num;
+            print "<a href='${page_name}?".http_build_query($url_param)."'>${page_num}</a>";
             print '</div>';
         }
     }

@@ -9,8 +9,8 @@
     <title>Index Page</title>
     <script type="text/javascript">
         function search_dialog(){
-            let search_word=window.prompt("検索したい言葉は？","");
-            window.location.href="search.php?word="+search_word;
+            let search_word=prompt("検索したい言葉は？","");
+            location.href="search.php?word="+search_word;
         }
     </script>
 </head>
@@ -30,16 +30,12 @@
             <button type="submit">作成</button>
         </form>
         <!-- 検索 -->
-        <form method="POST" onsubmit='return search_dialog()'>
-            <input type="submit" value="検索">
-        </form>
+        <!-- 時間ないので、文字列として一致するかでやる -->
+        <input type="button" value="検索" onclick="search_dialog()">
     </header>
     <main>
         <div id="list">
             <!-- リストの一覧を表示（最大5件） -->
-            <!-- リストの要素を押すと選択が変化する（合わせてプレビューも変化） -->
-            <!-- それぞれの要素に削除ボタンを設置 -->
-            <!-- ここは後々ソート順にも依存しそう -->
             <?php
             require_once "functions.php";
             // page_index：リスト一覧の何ページ目か（1-indexed）
@@ -111,7 +107,7 @@
     <footer id ="paging">
         <!-- ページング機能 -->
         <?php
-        create_paging($page_index,$page_num);
+        create_paging($page_index,$page_num,"index.php",array());
         ?>
     </footer>
 </body>
