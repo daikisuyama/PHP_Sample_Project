@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="search.css">
     <title>Search Page</title>
     <script type="text/javascript">
         function search_dialog(){
@@ -24,7 +24,7 @@
         $page_index=1;
     }
     // 検索ワード
-    $search_word=$get["word"];
+    $search_word=$_GET["word"];
     ?>
     <h1>ToDo List</h1>
     <div>
