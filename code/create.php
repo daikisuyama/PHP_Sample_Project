@@ -8,19 +8,7 @@
     <link rel="stylesheet" type="text/css" href="view.css">
     <title>View Page</title>
     <script type="text/javascript">
-        // フォームのバリデーションチェック
-        function check_dialog(){
-            let title=document.getElementById("element_title").value;
-            if(title.length>31){
-                alert("タイトルが長すぎます\n");
-                return false;
-            }else if(title===""){
-                alert("タイトルが未入力です\n");
-                return false;
-            }else{
-                return true;
-            }
-        }
+        import check_dialog from "function";
     </script>
 </head>
 <body>
