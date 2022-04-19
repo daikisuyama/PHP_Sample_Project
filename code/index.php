@@ -8,24 +8,20 @@
     <link rel="stylesheet" type="text/css" href="index.css">
     <title>Index Page</title>
     <script type="text/javascript">
-        function search_dialog(){
-            let search_word=prompt("検索したい言葉は？","");
-            location.href="index.php?word="+search_word;
-        }
+        import search_dialog from "function";
     </script>
 </head>
 <body>
     <?php
+    // エラー表示
+    error_reporting(E_ALL);
     // GETパラメータ受け取り
     // page_index：検索一覧の何ページ目か（1-indexed）
-    $page_index=$_GET["page"];
-    // 指定ない場合は1
-    if(is_null($_GET["page"])){
-        $page_index=1;
-    }
+    // していない場合は1
+    $page_index=isset($_GET['page']) ? $_GET["page"] : 1;
     // 検索ワード
-    // nullを許容（indexページ）
-    $search_word=$_GET["word"];
+    // nullの場合はindexページ
+    $search_word=isset($_GET['page']) ? $_GET["word"]: null;
     ?>
     <h1>ToDo List</h1>
     <div>
@@ -46,6 +42,7 @@
         <input type="button" value="検索" onclick="search_dialog()">
     </div>
     <main>
+        <!-- この辺りは綺麗にできそう -->
         <div id="list">
             <!-- リストの一覧を表示（最大5件） -->
             <?php

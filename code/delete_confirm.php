@@ -11,6 +11,8 @@
 <body>
     <main>
         <?php
+        // エラー表示
+        error_reporting(E_ALL);
         require_once "functions.php";
         try{
             // フォーム受け取り

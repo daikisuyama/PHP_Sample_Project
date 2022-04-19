@@ -13,6 +13,8 @@
 </head>
 <body>
     <?php
+    // エラー表示
+    error_reporting(E_ALL);
     // GETパラメータ受け取り
     $item_id=$_GET["id"];
     ?>
