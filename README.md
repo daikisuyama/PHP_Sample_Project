@@ -20,7 +20,7 @@
             - /Applications/XAMPP/htdocs/code -> ~/Desktop/php_training_2022/php_training_app/code
             -　不具合によりこの構成を実現できない
         - このディレクトリの中身を毎回コピーする
-    - image：メモアプリのイメージ図
+    - image：ToDoアプリのイメージ図
 ```
 
 ## データベースの定義
