@@ -2,12 +2,15 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="index.css">
     <title>Index Page</title>
     <script type="text/javascript">
         function search_dialog(){
             let search_word=prompt("検索したい言葉は？","");
-            location.href="search.php?word="+search_word;
+            location.href="index.php?word="+search_word;
         }
     </script>
 </head>
@@ -20,10 +23,9 @@
     if(is_null($_GET["page"])){
         $page_index=1;
     }
-    // page_order:並び順
-    // 1→作成日時（デフォルト）
-    // 2→タイトル名
-    // 3→更新日時
+    // 検索ワード
+    // nullを許容（indexページ）
+    $search_word=$_GET["word"];
     ?>
     <h1>ToDo List</h1>
     <div>
@@ -53,9 +55,16 @@
                 $dbh=db_access();
                 
                 // SQL文の実行（全数取得、item_sum）
-                $sql_1="SELECT COUNT(*) FROM posts";
-                $stmt_1=$dbh->prepare($sql_1);
-                $stmt_1->execute();
+                if(is_null($search_word)){
+                    $sql_1="SELECT COUNT(*) FROM posts";
+                    $stmt_1=$dbh->prepare($sql_1);
+                    $stmt_1->execute();
+                }else{
+                    $sql_1="SELECT COUNT(*) FROM posts WHERE title LIKE ?";
+                    $stmt_1=$dbh->prepare($sql_1);
+                    $data=[$search_word];
+                    $stmt_1->execute($data);
+                }
                 $item_sum=$stmt_1->fetchColumn(); // 次行の最初のカラムを返す
                 // page_item_max:ページに表示する最大件数
                 $page_item_max=5;
@@ -64,7 +73,8 @@
 
                 if($page_num==0){
                     // 登録されているToDoがない場合
-                    print "登録されているToDoがありません。<br>";
+                    print is_null($search_word) ? "登録されているToDoがありません。<br>" : "該当するToDoがありません。<br>";
+                    print '<a href="index.php">一覧へ</a>';
                 }elseif($page_index>$page_num){
                     // 範囲外のページにアクセスしようとした場合
                     print "存在しないページです。<br>";
@@ -76,16 +86,25 @@
 
                 // SQL文の実行（必要な件数分取得）
                 // ページごとにクエリを走らせる（件数少ないし妥協）
-                $sql_2="SELECT id,title,content,created_at,updated_at FROM posts LIMIT ?,?";
-                $stmt_2=$dbh->prepare($sql_2);
-                // page_item_num：ページ（$page_index）に表示する件数
-                $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
-                // 変数をバインドする際にexecute関数にarrayで渡すと文字列に暗黙的に変換される
+                // 変数をバインドする際にexecute関数にarrayで渡すと文字列に暗黙的に変換されてしまう
                 // 参照：https://www.php.net/manual/ja/pdostatement.execute.php
                 // bindValue関数で型を指定してやると解決
-                // bindParam関数だとダメ（なんで）
-                $stmt_2->bindValue(1,$page_item_max*($page_index-1),PDO::PARAM_INT);
-                $stmt_2->bindValue(2,$page_item_num,PDO::PARAM_INT);
+                if(is_null($search_word)){
+                    $sql_2="SELECT id,title,content,created_at,updated_at FROM posts LIMIT ?,?";
+                    $stmt_2=$dbh->prepare($sql_2);
+                    // page_item_num：ページ（$page_index）に表示する件数
+                    $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
+                    $stmt_2->bindValue(1,$page_item_max*($page_index-1),PDO::PARAM_INT);
+                    $stmt_2->bindValue(2,$page_item_num,PDO::PARAM_INT);
+                }else{
+                    $sql_2="SELECT id,title,content,created_at,updated_at FROM posts WHERE title LIKE ? LIMIT ?,?";
+                    $stmt_2=$dbh->prepare($sql_2);
+                    // page_item_num：ページ（$page_index）に表示する件数
+                    $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
+                    $stmt_2->bindValue(1,$search_word,PDO::PARAM_STR);
+                    $stmt_2->bindValue(2,$page_item_max*($page_index-1),PDO::PARAM_INT);
+                    $stmt_2->bindValue(3,$page_item_num,PDO::PARAM_INT);
+                }
                 $stmt_2->execute();
 
                 // データベースからの切断
@@ -102,7 +121,7 @@
                         $item_title=$rec["title"];
                         // タイトルと削除ボタンを表示
                         print '<div class="list_item">';
-                        print '<a href="view.php?id='.$item_id.'">'.$item_title."</a>";
+                        print '<a href="view.php?id='.$item_id.'">'.htmlspecialchars($item_title,ENT_QUOTES,"UTF-8")."</a>";
                         // 削除（確認ダイアログ）
                         print '<form method="POST" action="delete_confirm.php" onsubmit="return window.confirm('."'本当に削除しますか？'".')">';
                         print '<input type="hidden" name="id" value="'.$item_id.'">';

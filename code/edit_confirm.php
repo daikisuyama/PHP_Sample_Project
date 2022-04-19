@@ -16,11 +16,10 @@
         require_once "functions.php";
         try{
             // フォーム受け取り
-            $post=sanitize($_POST);
-            $item_id=$post["id"];
-            $item_title=$post["title"];
-            $item_content=$post["content"];
-            $item_created_at=$post["created_at"];
+            $item_id=$_POST["id"];
+            $item_title=$_POST["title"];
+            $item_content=$_POST["content"];
+            $item_created_at=$_POST["created_at"];
             $item_updated_at=date("Y-m-d H:i:s");
 
             // データベースへの接続
