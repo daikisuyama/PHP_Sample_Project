@@ -14,7 +14,13 @@
     // エラー表示
     error_reporting(E_ALL);
     // GETパラメータ受け取り
-    $item_id=$_GET["id"];
+    if(isset($_GET["id"])){
+        $item_id=$_GET["id"];
+    }else{
+        print "存在しないページです。<br>";
+        print '<a href="index.php">一覧へ</a>';
+        exit();
+    }
     ?>
     <div>
         <a href="index.php">一覧へ</a>

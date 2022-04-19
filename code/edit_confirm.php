@@ -18,10 +18,16 @@
         require_once "functions.php";
         try{
             // フォーム受け取り
-            $item_id=$_POST["id"];
-            $item_title=$_POST["title"];
-            $item_content=$_POST["content"];
-            $item_updated_at=date("Y-m-d H:i:s");
+            if(isset($_POST["id"])){
+                $item_id=$_POST["id"];
+                $item_title=$_POST["title"];
+                $item_content=$_POST["content"];
+                $item_updated_at=date("Y-m-d H:i:s");
+            }else{
+                print "存在しないページです。<br>";
+                print '<a href="index.php">一覧へ</a>';
+                exit();
+            }
 
             // データベースへの接続
             $dbh=db_access();
