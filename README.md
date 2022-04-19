@@ -13,13 +13,14 @@
 ## プロジェクトのディレクトリ構成
 
 ```
-- PHP_Sample_Project
+- ~/Desktop/php_training_2022/php_training_app
     - README.md：このプロジェクトについての概要
-    - sample_code：PHPのコードを管理するディレクトリ
-        - XAMPPのhtdocs内からシンボリックリンクを張る
-        - /Applications/XAMPP/htdocs/sample_code -> /Users/DAIKI/Desktop/PHP_Sample_Project/sample_code
-        - 不具合が起きているので、この構成ではできていない
-    - app_image：メモアプリのイメージ図
+    - code：PHPのコードを管理するディレクトリ
+        - シンボリックリンクを貼りたい
+            - /Applications/XAMPP/htdocs/code -> ~/Desktop/php_training_2022/php_training_app/code
+            -　不具合によりこの構成を実現できない
+        - このディレクトリの中身を毎回コピーする
+    - image：メモアプリのイメージ図
 ```
 
 ## データベースの定義
