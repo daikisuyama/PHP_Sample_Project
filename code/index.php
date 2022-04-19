@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="index.css">
     <title>Index Page</title>
-    <script type="text/javascript">
-        import search_dialog from "function";
-    </script>
+    <script src="function.js"></script>
 </head>
 <body>
     <?php
@@ -21,26 +19,27 @@
     $page_index=isset($_GET['page']) ? $_GET["page"] : 1;
     // 検索ワード
     // nullの場合はindexページ
-    $search_word=isset($_GET['page']) ? $_GET["word"]: null;
+    $search_word=isset($_GET['word']) ? $_GET["word"]: null;
+    // ソート順（作成日時順：0、タイトル名順：1、更新日時順：2）
+    $sort_which=isset($_GET['sort_which']) ? $_GET["sort_which"]: 0;
     ?>
     <h1>ToDo List</h1>
+    
     <div>
         <!-- ソート用の選択肢、未実装 -->
-        <form action="sort.php">
-            <select>
-                <option value="id" selected>作成日時順</option>
-                <option value="title">タイトル名順</option>
-                <option value="updated_at">更新日時順</option>
-            </select>
-        </form>
+        <select id="sort_which">
+            <option value="0">作成日時順</option>
+            <option value="1">タイトル名順</option>
+            <option value="2">更新日時順</option>
+        </select>
         <form action="create.php">
             <!-- ボタンを押すと未入力の状態で作成 -->
             <button type="submit">作成</button>
         </form>
         <!-- 検索 -->
-        <!-- 時間ないので、文字列として一致するかでやる -->
         <input type="button" value="検索" onclick="search_dialog()">
     </div>
+
     <main>
         <!-- この辺りは綺麗にできそう -->
         <div id="list">
@@ -50,7 +49,7 @@
             try{
                 // データベースへの接続
                 $dbh=db_access();
-                
+
                 // SQL文の実行（全数取得、item_sum）
                 if(is_null($search_word)){
                     $sql_1="SELECT COUNT(*) FROM posts";
@@ -72,7 +71,7 @@
                     // 登録されているToDoがない場合
                     print is_null($search_word) ? "登録されているToDoがありません。<br>" : "該当するToDoがありません。<br>";
                     print '<a href="index.php">一覧へ</a>';
-                }elseif($page_index>$page_num){
+                }elseif($page_index>$page_num || $page_index<1){
                     // 範囲外のページにアクセスしようとした場合
                     print "存在しないページです。<br>";
                     print '<a href="index.php">一覧へ</a>';
@@ -82,19 +81,39 @@
                 }
 
                 // SQL文の実行（必要な件数分取得）
+                // ソート順を元にしたORDER BY句
+                switch($sort_which){
+                    case 0:
+                        $sql_order=" ORDER BY created_at desc, id desc LIMIT ?,?";
+                        break;
+                    case 1:
+                        $sql_order=" ORDER BY title asc, id asc LIMIT ?,?";;
+                        break;
+                    case 2:
+                        $sql_order=" ORDER BY updated_at desc, id desc LIMIT ?,?";
+                        break;
+                    default:
+                        print "存在しないページです。<br>";
+                        print '<a href="index.php">一覧へ</a>';
+                        $dbh=null;
+                        exit();
+                }
+                
                 // ページごとにクエリを走らせる（件数少ないし妥協）
                 // 変数をバインドする際にexecute関数にarrayで渡すと文字列に暗黙的に変換されてしまう
                 // 参照：https://www.php.net/manual/ja/pdostatement.execute.php
                 // bindValue関数で型を指定してやると解決
                 if(is_null($search_word)){
-                    $sql_2="SELECT id,title,content,created_at,updated_at FROM posts LIMIT ?,?";
+                    $sql_2="SELECT id,title,content,created_at,updated_at FROM posts";
+                    $sql_2.=$sql_order;
                     $stmt_2=$dbh->prepare($sql_2);
                     // page_item_num：ページ（$page_index）に表示する件数
                     $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
                     $stmt_2->bindValue(1,$page_item_max*($page_index-1),PDO::PARAM_INT);
                     $stmt_2->bindValue(2,$page_item_num,PDO::PARAM_INT);
                 }else{
-                    $sql_2="SELECT id,title,content,created_at,updated_at FROM posts WHERE title LIKE ? LIMIT ?,?";
+                    $sql_2="SELECT id,title,content,created_at,updated_at FROM posts WHERE title LIKE ?";
+                    $sql_2.=$sql_order;
                     $stmt_2=$dbh->prepare($sql_2);
                     // page_item_num：ページ（$page_index）に表示する件数
                     $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
@@ -135,11 +154,14 @@
             ?>
         </div>
     </main>
+
     <footer id ="paging">
         <!-- ページング機能 -->
         <?php
         create_paging($page_index,$page_num,"index.php",array());
         ?>
     </footer>
+
+    <script type="text/javascript">sort_page();</script>
 </body>
 </html>

@@ -16,8 +16,7 @@
         require_once "functions.php";
         try{
             // フォーム受け取り
-            $post=sanitize($_POST);
-            $item_id=$post["id"];
+            $item_id=$_POST["id"];
 
             // データベースへの接続
             $dbh=db_access();
