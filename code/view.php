@@ -7,9 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" type="text/css" href="view.css">
     <title>View Page</title>
-    <script type="text/javascript">
-        import check_dialog from "function";
-    </script>
+    <script src="function.js"></script>
 </head>
 <body>
     <?php
@@ -48,7 +46,7 @@
                 $item_updated_at=$rec["updated_at"];
             }else{
                 echo "該当するToDoがありません。<br>";
-                print '<a href="index.php">一覧へ</a>';
+                exit();
             }
             
             // データベースからの切断
