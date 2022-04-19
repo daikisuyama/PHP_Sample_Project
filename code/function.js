@@ -30,6 +30,10 @@ function sort_page(){
             search_params.set("sort_which",sort_which.value);
             location.href="index.php?"+search_params.toString();
         });
-        sort_which.options[search_params.get("sort_which")].selected=true;
+        if(search_params.get("sort_which")===null){
+            sort_which.options[0].selected=true;
+        }else{
+            sort_which.options[search_params.get("sort_which")].selected=true;
+        }
     });
 }
