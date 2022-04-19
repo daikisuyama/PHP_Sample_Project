@@ -26,6 +26,7 @@
 ## データベースの定義
 
 - データベース名：sample_project
+    - utf8_unicode_ci
 - テーブル名：posts
 
 |カラム名|データ型|null許可|カラムの説明|
