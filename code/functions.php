@@ -15,7 +15,7 @@ function db_access(){
 // page_num：合計で何ページか
 // url_param：クエリパラメータを連想配列で
 
-// urlparamについて
+// urlparamについて（色々直さないとあかん）
 class Paging{
     private $page_index,$page_num,$url_param;
 
