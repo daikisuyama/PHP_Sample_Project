@@ -10,15 +10,6 @@ function db_access(){
     return $dbh;
 }
 
-// 複数の入力データへの安全対策
-// クロスサイトスクリプティングを避けるために文字列に直す
-function sanitize($before){
-    foreach($before as $key=>$value){
-        $after[$key]=htmlspecialchars($value,ENT_QUOTES,"UTF-8");
-    }
-    return $after;
-}
-
 // ページング機能の作成
 // $page_index：何ページ目か
 // $page_num：合計で何ページか

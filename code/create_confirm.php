@@ -11,12 +11,13 @@
 <body>
     <main>
         <?php
+        // エラー表示
+        error_reporting(E_ALL);
         require_once "functions.php";
         try{
             // フォーム受け取り
-            $post=sanitize($_POST);
-            $item_title=$post["title"];
-            $item_content=$post["content"];
+            $item_title=$_POST["title"];
+            $item_content=$_POST["content"];
             $item_created_at=date("Y-m-d H:i:s");
             $item_updated_at=$item_created_at;
 

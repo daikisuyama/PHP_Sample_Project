@@ -13,23 +13,23 @@
         <!-- アイテムの情報の更新処理 -->
         <!-- Ajaxかiframeを使いたかった -->
         <?php
+        // エラー表示
+        error_reporting(E_ALL);
         require_once "functions.php";
         try{
             // フォーム受け取り
-            $post=sanitize($_POST);
-            $item_id=$post["id"];
-            $item_title=$post["title"];
-            $item_content=$post["content"];
-            $item_created_at=$post["created_at"];
+            $item_id=$_POST["id"];
+            $item_title=$_POST["title"];
+            $item_content=$_POST["content"];
             $item_updated_at=date("Y-m-d H:i:s");
 
             // データベースへの接続
             $dbh=db_access();
 
             // SQL文の実行
-            $sql="UPDATE posts SET title=?,content=?,created_at=?,updated_at=? WHERE id=?";
+            $sql="UPDATE posts SET title=?,content=?,updated_at=? WHERE id=?";
             $stmt=$dbh->prepare($sql);
-            $data=[$item_title,$item_content,$item_created_at,$item_updated_at,$item_id];
+            $data=[$item_title,$item_content,$item_updated_at,$item_id];
             $stmt->execute($data);
 
             // データベースからの切断
