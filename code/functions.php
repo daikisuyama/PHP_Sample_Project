@@ -14,14 +14,14 @@ function db_access(){
 class Paging{
     // page_index：index.phpの何ページ目にいるか
     // page_num：index.phpのページ数
-    // url_param：今いるページのクエリパラメータ
+    // url_params：今いるページのクエリパラメータ
     private int $page_index,$page_num;
-    private array $url_param;
+    private array $url_params;
 
-    function __construct($page_index,$page_num,$url_param){
+    function __construct($page_index,$page_num,$url_params){
         $this->page_index=$page_index;
         $this->page_num=$page_num;
-        $this->url_param=$url_param;
+        $this->url_params=$url_params;
     }
 
     // 3点ドットの作成
@@ -45,12 +45,12 @@ class Paging{
         for($i=$begin;$i<=$end;++$i){
             $class_name=$this->page_index==$i ? "'paging_item_now'" : "'paging_item'";
             print "<div class={$class_name}>";
-            $this->url_param["page"]=$i;
-            print "<a href='index.php?".http_build_query($this->url_param)."'>{$i}</a>";
+            $this->url_params["page"]=$i;
+            print "<a href='index.php?".http_build_query($this->url_params)."'>{$i}</a>";
             print "</div>";
         }
         // 元に戻す
-        $this->url_param["page"]=$this->page_index;
+        $this->url_params["page"]=$this->page_index;
     }
 
     private function create_paging_minimum(){

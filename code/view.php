@@ -13,6 +13,9 @@
     <?php
     // エラー表示
     error_reporting(E_ALL);
+    // 関数の読み込み
+    require_once "functions.php";
+
     // GETパラメータ受け取り
     if(isset($_GET["id"])){
         $item_id=$_GET["id"];
@@ -33,35 +36,28 @@
     <main>
         <!-- ToDoリストのアイテムの情報を取得 -->
         <?php
-        require_once "functions.php";
-        try{
-            // データベースへの接続
-            $dbh=db_access();
+        // データベースへの接続
+        $dbh=db_access();
 
-            // SQL文の実行
-            $sql="SELECT title,content,updated_at FROM posts WHERE id=?";
-            $stmt=$dbh->prepare($sql);
-            $data=[$item_id];
-            $stmt->execute($data);
+        // SQL文の実行
+        $sql="SELECT title,content,updated_at FROM posts WHERE id=?";
+        $stmt=$dbh->prepare($sql);
+        $data=[$item_id];
+        $stmt->execute($data);
 
-            // レコードを取得
-            $rec=$stmt->fetch(PDO::FETCH_ASSOC);
-            if($rec){
-                $item_title=$rec["title"];
-                $item_content=$rec["content"];
-                $item_updated_at=$rec["updated_at"];
-            }else{
-                echo "該当するToDoがありません。<br>";
-                exit();
-            }
-            
-            // データベースからの切断
-            $dbh=null;
-        }catch(Exception $e){
-            print "以下の不具合が発生しております。<br>";
-            print $e->getMessage();
+        // レコードを取得
+        $rec=$stmt->fetch(PDO::FETCH_ASSOC);
+        if($rec){
+            $item_title=$rec["title"];
+            $item_content=$rec["content"];
+            $item_updated_at=$rec["updated_at"];
+        }else{
+            echo "該当するToDoがありません。<br>";
             exit();
         }
+        
+        // データベースからの切断
+        $dbh=null;
         ?>
 
         <!-- フォームの作成 -->
