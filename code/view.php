@@ -18,7 +18,7 @@
 
     // GETパラメータ受け取り
     if(isset($_GET["id"])){
-        $item_id=$_GET["id"];
+        $id=$_GET["id"];
     }else{
         print "存在しないページです。<br>";
         print '<a href="index.php">一覧へ</a>';
@@ -29,42 +29,32 @@
         <a href="index.php">一覧へ</a>
         <!-- 削除（確認ダイアログ） -->
         <form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()">
-            <input type="hidden" name="id" value="<?php print $item_id ?>">
+            <input type="hidden" name="id" value="<?php print $id ?>">
             <input type="submit" value="削除">
         </form>
     </div>
     <main>
         <!-- ToDoリストのアイテムの情報を取得 -->
         <?php
-        // データベースへの接続
-        $dbh=db_access();
-
-        // SQL文の実行
         $sql="SELECT title,content,updated_at FROM posts WHERE id=?";
-        $stmt=$dbh->prepare($sql);
-        $data=[$item_id];
-        $stmt->execute($data);
-
-        // レコードを取得
-        $rec=$stmt->fetch(PDO::FETCH_ASSOC);
-        if($rec){
-            $item_title=$rec["title"];
-            $item_content=$rec["content"];
-            $item_updated_at=$rec["updated_at"];
+        $data=[$id];
+        $dbh=new MyDB_select($sql,$data,"i");
+        $dbh->sql_execute();
+        if($rec=$dbh->get_record()){
+            $title=$rec["title"];
+            $content=$rec["content"];
+            $updated_at=$rec["updated_at"];
         }else{
             echo "該当するToDoがありません。<br>";
             exit();
         }
-        
-        // データベースからの切断
-        $dbh=null;
         ?>
 
         <!-- フォームの作成 -->
         <form method="POST" action="edit_confirm.php" onsubmit="return check_dialog()">
-            <input type="text" name="title" value="<?php print $item_title?>" id="form_title"></input><br>
-            <textarea name="content"><?php print $item_content?></textarea>
-            <input type="hidden" name="id" value="<?php print $item_id ?>">
+            <input type="text" name="title" value="<?php print $title?>" id="form_title"></input><br>
+            <textarea name="content"><?php print $content?></textarea>
+            <input type="hidden" name="id" value="<?php print $id ?>">
             <input type="submit" value="完了">
         </form>
     </main>
