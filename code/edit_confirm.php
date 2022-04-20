@@ -18,7 +18,7 @@
         require_once "functions.php";
         try{
             // フォーム受け取り
-            if(isset($_POST["id"])){
+            if(isset($_POST["id"]) && isset($_POST["title"]) && isset($_POST["content"])){
                 $item_id=$_POST["id"];
                 $item_title=$_POST["title"];
                 $item_content=$_POST["content"];

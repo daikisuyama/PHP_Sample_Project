@@ -66,7 +66,7 @@
 
         <!-- フォームの作成 -->
         <form method="POST" action="edit_confirm.php" onsubmit="return check_dialog()">
-            <input type="text" name="title" value="<?php print $item_title?>" id="element_title"></input><br>
+            <input type="text" name="title" value="<?php print $item_title?>" id="form_title"></input><br>
             <textarea name="content"><?php print $item_content?></textarea>
             <input type="hidden" name="id" value="<?php print $item_id ?>">
             <input type="submit" value="完了">
