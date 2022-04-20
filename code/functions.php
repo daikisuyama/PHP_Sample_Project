@@ -11,12 +11,10 @@ function db_access(){
 }
 
 // ページング機能
-// page_index：何ページ目か
-// page_num：合計で何ページか
-// url_param：クエリパラメータを連想配列で
-
-// urlparamについて（色々直さないとあかん）
 class Paging{
+    // page_index：index.phpの何ページ目にいるか
+    // page_num：index.phpのページ数
+    // url_param：今いるページのクエリパラメータ
     private $page_index,$page_num,$url_param;
 
     function __construct($page_index,$page_num,$url_param){
@@ -48,6 +46,8 @@ class Paging{
             print "<a href='index.php?".http_build_query($this->url_param)."'>{$i}</a>";
             print '</div>';
         }
+        // 元に戻す
+        $this->url_param["page"]=$this->page_index;
     }
 
     private function create_paging_left(){
@@ -68,6 +68,8 @@ class Paging{
         $this->url_param["page"]=$this->page_num;
         print "<a href='index.php?".http_build_query($this->url_param)."'>{$this->page_num}</a>";
         print '</div>';
+        // 元に戻す
+        $this->url_param["page"]=$this->page_index;
     }
 
     private function create_paging_right(){
@@ -88,6 +90,8 @@ class Paging{
             print "<a href='index.php?".http_build_query($this->url_param)."'>{$i}</a>";
             print '</div>';
         }
+        // 元に戻す
+        $this->url_param["page"]=$this->page_index;
     }
 
     private function create_paging_maximum(){
@@ -115,6 +119,8 @@ class Paging{
         $this->url_param["page"]=$this->page_num;
         print "<a href='index.php?".http_build_query($this->url_param)."'>{$this->page_num}</a>";
         print '</div>';
+        // 元に戻す
+        $this->url_param["page"]=$this->page_index;
     }
 }
 ?>

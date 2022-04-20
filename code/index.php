@@ -158,7 +158,7 @@
     <footer id ="paging">
         <!-- ページング機能 -->
         <?php
-        $paging=new Paging($page_index,$page_num,array());
+        $paging=new Paging($page_index,$page_num,array("page"=>$page_index,"word"=>$search_word,"sort_which"=>$sort_which));
         $paging->create_paging();
         ?>
     </footer>

@@ -1,6 +1,6 @@
 // フォームのバリデーションチェック用ダイアログ（タイトルのみ）
 function check_dialog(){
-    let title=document.getElementById("element_title").value;
+    let title=document.getElementById("form_title").value;
     if(title.length>31){
         alert("タイトルが長すぎます\n");
         return false;
