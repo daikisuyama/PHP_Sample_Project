@@ -139,7 +139,7 @@
                         print '<div class="list_item">';
                         print '<a href="view.php?id='.$item_id.'">'.htmlspecialchars($item_title,ENT_QUOTES,"UTF-8")."</a>";
                         // 削除（確認ダイアログ）
-                        print '<form method="POST" action="delete_confirm.php" onsubmit="return window.confirm('."'本当に削除しますか？'".')">';
+                        print '<form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()">';
                         print '<input type="hidden" name="id" value="'.$item_id.'">';
                         print '<input type="submit" value="削除">';
                         print '</form>';

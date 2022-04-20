@@ -25,7 +25,7 @@
     <div>
         <a href="index.php">一覧へ</a>
         <!-- 削除（確認ダイアログ） -->
-        <form method="POST" action="delete_confirm.php" onsubmit='return window.confirm("本当に削除しますか？")'>
+        <form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()">
             <input type="hidden" name="id" value="<?php print $item_id ?>">
             <input type="submit" value="削除">
         </form>

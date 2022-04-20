@@ -1,3 +1,5 @@
+// イベントの返り値としてtrue/falseを返す
+
 // フォームのバリデーションチェック用ダイアログ（タイトルのみ）
 function check_dialog(){
     let title=document.getElementById("form_title").value;
@@ -20,13 +22,18 @@ function search_dialog(){
     }
 }
 
+// 削除確認用ダイアログ
+function delete_dialog(){
+    return confirm('本当に削除しますか？');
+}
+
 // ソートの選択状態の変更、選択状態の変更に伴ったページの遷移
 // DMOContenがLoadされてから実行しないとおかしなことに
 function sort_page(){
     document.addEventListener('DOMContentLoaded',function(){
         let sort_which=document.getElementById("sort_which");
         let search_params=new URLSearchParams(location.search);
-        sort_which.addEventListener('change',function(){
+        sort_which.addEventListener("change",function(){
             search_params.set("sort_which",sort_which.value);
             location.href="index.php?"+search_params.toString();
         });
