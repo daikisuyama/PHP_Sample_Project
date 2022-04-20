@@ -20,30 +20,23 @@
 
         // フォーム受け取り
         if(isset($_POST["id"]) && isset($_POST["title"]) && isset($_POST["content"])){
-            $item_id=$_POST["id"];
-            $item_title=$_POST["title"];
-            $item_content=$_POST["content"];
-            $item_updated_at=date("Y-m-d H:i:s");
+            $id=$_POST["id"];
+            $title=$_POST["title"];
+            $content=$_POST["content"];
+            $updated_at=date("Y-m-d H:i:s");
         }else{
             print "存在しないページです。<br>";
             print '<a href="index.php">一覧へ</a>';
             exit();
         }
 
-        // データベースへの接続
-        $dbh=db_access();
-
-        // SQL文の実行
         $sql="UPDATE posts SET title=?,content=?,updated_at=? WHERE id=?";
-        $stmt=$dbh->prepare($sql);
-        $data=[$item_title,$item_content,$item_updated_at,$item_id];
-        $stmt->execute($data);
-
-        // データベースからの切断
-        $dbh=null;
+        $data=[$title,$content,$updated_at,$id];
+        $dbh=new MyDB_update($sql,$data,"ssss");
+        $dbh->sql_execute();
 
         print '<a href="index.php">一覧へ</a><br>';
-        print '<a href="view.php?id='.$item_id.'">編集画面へ</a><br>';
+        print '<a href="view.php?id='.$id.'">編集画面へ</a><br>';
         print "更新が完了しました<br>";
         ?>
         <!-- フォームの作成 -->

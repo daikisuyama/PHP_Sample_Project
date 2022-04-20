@@ -17,33 +17,15 @@
         require_once "functions.php";
 
         // フォーム受け取り
-        $item_id=$_POST["id"];
+        $id=$_POST["id"];
 
-        // データベースへの接続
-        $dbh=db_access();
-
-        // SQL文の実行（存在の確認→削除）
-        $data=[$item_id];
-
-        $sql_1="SELECT COUNT(*) FROM posts WHERE id=?";
-        $stmt_1=$dbh->prepare($sql_1);
-        $stmt_1->execute($data);
-
-        $sql_2="DELETE FROM posts WHERE id=?";
-        $stmt_2=$dbh->prepare($sql_2);
-        $stmt_2->execute($data);
-
-        $item_sum=$stmt_1->fetchColumn();
-
-        // データベースからの切断
-        $dbh=null;
-
-        print '<a href="index.php">一覧へ</a><br>';
-        if($item_sum==0){
-            print "存在しないTodoです。<br>";
-        }else{
-            print "削除が完了しました。<br>";
-        }
+        // 存在の確認（削除時のエラーが出ないため）
+        $sql="DELETE FROM posts WHERE id=?";
+        $data=[$id];
+        $data_types="i";
+        $dbh=new MyDB_delete($sql,$data,$data_types);
+        print $dbh->sql_execute() ? "削除が完了しました。<br>" : "存在しないTodoです。<br>";
+        print '<a href="index.php">一覧へ</a>';
         ?>
     </main>
 </body>

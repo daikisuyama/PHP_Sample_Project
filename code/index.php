@@ -21,17 +21,17 @@
     $page_index=isset($_GET['page']) ? $_GET["page"] : 1;
     // 検索ワード（nullの場合はindexページ）
     $search_word=isset($_GET['word']) ? $_GET["word"]: null;
-    // ソート順（作成日時順：0、タイトル名順：1、更新日時順：2）
-    $sort_which=isset($_GET['sort_which']) ? $_GET["sort_which"]: 0;
+    // ソート順（作成日時順：created_at、タイトル名順：title、更新日時順：updated_at）
+    $sort_which=isset($_GET['sort_which']) ? $_GET["sort_which"]: "created_at";
     ?>
     <h1>ToDo List</h1>
     
     <div>
         <!-- ソート用の選択肢 -->
         <select id="sort_which">
-            <option value="0">作成日時順</option>
-            <option value="1">タイトル名順</option>
-            <option value="2">更新日時順</option>
+            <option value="created_at">作成日時順</option>
+            <option value="title">タイトル名順</option>
+            <option value="updated_at">更新日時順</option>
         </select>
         <form action="create.php">
             <!-- ボタンを押すと未入力の状態で作成 -->
@@ -43,27 +43,27 @@
 
     <main>
         <div id="list">
-            <!-- リストの一覧を表示（最大5件） -->
             <?php
-            // データベースへの接続
-            $dbh=db_access();
-
-            // SQL文の実行（全数取得、item_sum）
+            // 全数取得（SQL）
             if(is_null($search_word)){
-                $sql_1="SELECT COUNT(*) FROM posts";
-                $stmt_1=$dbh->prepare($sql_1);
-                $stmt_1->execute();
+                $sql="SELECT * FROM posts";
+                $data=[];
+                $dbh=new MyDB_select($sql,$data,"");
             }else{
-                $sql_1="SELECT COUNT(*) FROM posts WHERE title LIKE ?";
-                $stmt_1=$dbh->prepare($sql_1);
+                $sql="SELECT * FROM posts WHERE title LIKE ?";
                 $data=[$search_word];
-                $stmt_1->execute($data);
+                $dbh=new MyDB_select($sql,$data,"s");
             }
-            $item_sum=$stmt_1->fetchColumn(); // 次行の最初のカラムを返す
+            $dbh->sql_execute();
+
+            // item_sum:合計のitem数
+            $item_sum=$dbh->get_sum();
             // page_item_max:ページに表示する最大件数
             $page_item_max=5;
             // page_num：合計のページ数
             $page_num=(int)ceil($item_sum/$page_item_max);
+            // page_item_num：今いるページ（$page_index）に実際に表示する件数
+            $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
 
             if($page_num==0){
                 // 登録されているToDoがない場合
@@ -73,84 +73,59 @@
                 // 範囲外のページにアクセスしようとした場合
                 print "存在しないページです。<br>";
                 print '<a href="index.php">一覧へ</a>';
-                // データベースからの切断
-                $dbh=null;
                 exit();
             }
 
-            // SQL文の実行（必要な件数分取得）
-            // ソート順を元にしたORDER BY句
-            switch($sort_which){
-                case 0:
-                    $sql_order=" ORDER BY created_at desc, id desc LIMIT ?,?";
-                    break;
-                case 1:
-                    $sql_order=" ORDER BY title asc, id asc LIMIT ?,?";;
-                    break;
-                case 2:
-                    $sql_order=" ORDER BY updated_at desc, id desc LIMIT ?,?";
-                    break;
-                default:
-                    print "存在しないページです。<br>";
-                    print '<a href="index.php">一覧へ</a>';
-                    $dbh=null;
-                    exit();
-            }
-            
-            // ページごとにクエリを走らせる（件数少ないし妥協）
-            // 変数をバインドする際にexecute関数にarrayで渡すと文字列に暗黙的に変換されてしまう
-            // 参照：https://www.php.net/manual/ja/pdostatement.execute.php
-            // bindValue関数で型を指定してやると解決
-            if(is_null($search_word)){
-                $sql_2="SELECT * FROM posts";
-                $sql_2.=$sql_order;
-                $stmt_2=$dbh->prepare($sql_2);
-                // page_item_num：ページ（$page_index）に表示する件数
-                $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
-                $stmt_2->bindValue(1,$page_item_max*($page_index-1),PDO::PARAM_INT);
-                $stmt_2->bindValue(2,$page_item_num,PDO::PARAM_INT);
+            // 一覧表示
+            // ORDER BY句の指定
+            if(in_array($sort_which,array("created_at","title","updated_at"),true)){
+                $sql_order=" ORDER BY {$sort_which} ";
+                $sql_order.= $sort_which==="title" ? "asc": "desc";
+                $sql_order.=", id desc LIMIT ?,?";
             }else{
-                $sql_2="SELECT * FROM posts WHERE title LIKE ?";
-                $sql_2.=$sql_order;
-                $stmt_2=$dbh->prepare($sql_2);
-                // page_item_num：ページ（$page_index）に表示する件数
-                $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
-                $stmt_2->bindValue(1,$search_word,PDO::PARAM_STR);
-                $stmt_2->bindValue(2,$page_item_max*($page_index-1),PDO::PARAM_INT);
-                $stmt_2->bindValue(3,$page_item_num,PDO::PARAM_INT);
+                print "存在しないページです。<br>";
+                print '<a href="index.php">一覧へ</a>';
+                exit();
             }
-            $stmt_2->execute();
-
-            // データベースからの切断
-            $dbh=null;
+            // SELECT句の指定
+            if(is_null($search_word)){
+                $sql="SELECT * FROM posts";
+                $sql.=$sql_order;
+                $data=[$page_item_max*($page_index-1),$page_item_num];
+                $dbh->set_sql($sql);
+                $dbh->set_data($data);
+                $dbh->set_data_types("ii");
+            }else{
+                $sql="SELECT * FROM posts WHERE title LIKE ?";
+                $sql.=$sql_order;
+                $data=[$search_word,$page_item_max*($page_index-1),$page_item_num];
+                $dbh->set_sql($sql);
+                $dbh->set_data($data);
+                $dbh->set_data_types("sii");
+            }
+            $dbh->sql_execute();
 
             // 一覧の表示
-            while(true){
-                // レコードの取得
-                $rec=$stmt_2->fetch(PDO::FETCH_ASSOC);
-                if(!$rec){
-                    break;
-                }else{
-                    $item_id=$rec["id"];
-                    $item_title=$rec["title"];
-                    // タイトルと削除ボタンを表示
-                    print '<div class="list_item">';
-                    print '<a href="view.php?id='.$item_id.'">'.htmlspecialchars($item_title,ENT_QUOTES,"UTF-8")."</a>";
-                    // 削除（確認ダイアログ）
-                    print '<form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()">';
-                    print '<input type="hidden" name="id" value="'.$item_id.'">';
-                    print '<input type="submit" value="削除">';
-                    print '</form>';
-                    print '</div>';
-                }
+            while($rec=$dbh->get_record()){
+                $id=$rec["id"];
+                $title=$rec["title"];
+                print '<div class="list_item">';
+                // タイトル
+                print '<a href="view.php?id='.$id.'">'.htmlspecialchars($title,ENT_QUOTES,"UTF-8")."</a>";
+                // 削除ボタン
+                print '<form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()">';
+                print '<input type="hidden" name="id" value="'.$id.'">';
+                print '<input type="submit" value="削除">';
+                print '</form>';
+                print '</div>';
             }
             ?>
         </div>
     </main>
 
     <footer id ="paging">
-        <!-- ページング機能 -->
         <?php
+        // ページング
         $url_params=array("page"=>$page_index,"word"=>$search_word,"sort_which"=>$sort_which);
         $paging=new Paging($page_index,$page_num,$url_params);
         $paging->create_paging();
