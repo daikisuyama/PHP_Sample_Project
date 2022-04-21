@@ -5,10 +5,6 @@ require("./head.php");
 <body>
     <main>
         <?php
-        // エラー表示
-        error_reporting(E_ALL);
-        // クラスの読み込み
-        require_once "mydb.php";
         // フォーム受け取り
         if(isset($_POST["title"]) && isset($_POST["content"])){
             $title=$_POST["title"];

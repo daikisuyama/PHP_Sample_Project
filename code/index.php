@@ -4,13 +4,6 @@ require("./head.php");
 ?>
 <body>
     <?php
-    // エラー表示
-    error_reporting(E_ALL);
-    // クラスの読み込み
-    require_once "display.php";
-    require_once "paging.php";
-    require_once "mydb.php";
-
     // GETパラメータ受け取り
     // page_index：検索一覧の何ページ目か（1-indexed）
     $page_index=isset($_GET['page']) ? $_GET["page"] : 1;

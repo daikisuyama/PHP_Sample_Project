@@ -7,11 +7,6 @@ require("./head.php");
         <!-- アイテムの情報の更新処理 -->
         <!-- Ajaxかiframeを使いたかった -->
         <?php
-        // エラー表示
-        error_reporting(E_ALL);
-        // クラスの読み込み
-        require_once "mydb.php";
-
         // フォーム受け取り
         if(isset($_POST["id"]) && isset($_POST["title"]) && isset($_POST["content"])){
             $id=$_POST["id"];
