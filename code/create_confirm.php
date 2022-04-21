@@ -17,6 +17,7 @@ require("./head.php");
             exit();
         }
 
+        // SQLによるINSERT
         $sql="INSERT INTO posts(title,content,created_at,updated_at) VALUES (?,?,?,?)";
         $data=[$title,$content,$created_at,$updated_at];
         $dbh=new MyDB_insert($sql,$data,"ssss");

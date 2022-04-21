@@ -61,15 +61,7 @@ require("./head.php");
             while($rec=$disp->get_record()){
                 $id=$rec["id"];
                 $title=$rec["title"];
-                print '<div class="list_item">';
-                // タイトル
-                print '<a href="view.php?id='.$id.'">'.htmlspecialchars($title,ENT_QUOTES,"UTF-8")."</a>";
-                // 削除ボタン
-                print '<form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()">';
-                print '<input type="hidden" name="id" value="'.$id.'">';
-                print '<input type="submit" value="削除">';
-                print '</form>';
-                print '</div>';
+                require("./index_item.php");
             }
             ?>
         </div>

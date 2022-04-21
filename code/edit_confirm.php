@@ -19,6 +19,7 @@ require("./head.php");
             exit();
         }
 
+        // SQLによるUPDATE
         $sql="UPDATE posts SET title=?,content=?,updated_at=? WHERE id=?";
         $data=[$title,$content,$updated_at,$id];
         $dbh=new MyDB_update($sql,$data,"ssss");
@@ -28,7 +29,6 @@ require("./head.php");
         print '<a href="view.php?id='.$id.'">編集画面へ</a><br>';
         print "更新が完了しました<br>";
         ?>
-        <!-- フォームの作成 -->
     </main>
 
 </body>

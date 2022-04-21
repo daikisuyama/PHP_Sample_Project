@@ -5,11 +5,10 @@ require("./head.php");
 <body>
     <main>
         <?php
-
         // フォーム受け取り
         $id=$_POST["id"];
 
-        // 存在の確認（削除時のエラーが出ないため）
+        // SQLによるDELETE
         $sql="DELETE FROM posts WHERE id=?";
         $data=[$id];
         $data_types="i";
