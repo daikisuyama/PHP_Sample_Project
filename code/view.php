@@ -13,9 +13,10 @@
     <?php
     // エラー表示
     error_reporting(E_ALL);
-    // 関数の読み込み
-    require_once "functions.php";
-
+    // クラスの読み込み
+    require_once "display.php";
+    require_once "paging.php";
+    require_once "mydb.php";
     // GETパラメータ受け取り
     if(isset($_GET["id"])){
         $id=$_GET["id"];
@@ -34,27 +35,23 @@
         </form>
     </div>
     <main>
-        <!-- ToDoリストのアイテムの情報を取得 -->
+        <!-- ToDoの情報を取得 -->
         <?php
-        $sql="SELECT title,content,updated_at FROM posts WHERE id=?";
-        $data=[$id];
-        $dbh=new MyDB_select($sql,$data,"i");
-        $dbh->sql_execute();
-        if($rec=$dbh->get_record()){
-            $title=$rec["title"];
-            $content=$rec["content"];
-            $updated_at=$rec["updated_at"];
-        }else{
+        $view=new View($id);
+        $rec=$view->get_record();
+        if(is_null($rec)){
             echo "該当するToDoがありません。<br>";
             exit();
         }
         ?>
 
-        <!-- フォームの作成 -->
+        <!-- 編集用フォーム -->
         <form method="POST" action="edit_confirm.php" onsubmit="return check_dialog()">
-            <input type="text" name="title" value="<?php print $title?>" id="form_title"></input><br>
-            <textarea name="content"><?php print $content?></textarea>
-            <input type="hidden" name="id" value="<?php print $id ?>">
+            <input type="text" name="title" value="<?= $rec["title"]; ?>" id="form_title"></input><br>
+            <textarea name="content"><?= $rec["content"]; ?></textarea><br>
+            <input type="hidden" name="id" value="<?= $rec["id"]; ?>">
+            <input type="text" name="created_at" value="<?= $rec["created_at"]; ?>" disabled><br>
+            <input type="text" name="updated_at" value="<?= $rec["updated_at"]; ?>" disabled><br>
             <input type="submit" value="完了">
         </form>
     </main>

@@ -49,6 +49,12 @@ class MyDB{
         $this->data_types=$data_types;
     }
 
+    public function set_params($sql,$data,$data_types){
+        $this->set_sql($sql);
+        $this->set_data($data);
+        $this->set_data_types($data_types);
+    }
+
     function __destruct(){
         // データベースからの切断
         $this->mysqli->close();
@@ -66,6 +72,7 @@ class MyDB_select extends MyDB{
     public mysqli_result $result;
     public function sql_execute(){
         parent::sql_execute();
+        // バッファリングして結果を取得
         $this->result=$this->stmt->get_result();
     }
     
@@ -73,6 +80,7 @@ class MyDB_select extends MyDB{
     public function get_record(){
         return $this->result->fetch_assoc();
     }
+
     // 全数の取得（直前でsql_execute()を行なっている場合）
     public function get_sum(){
         return $this->result->num_rows;

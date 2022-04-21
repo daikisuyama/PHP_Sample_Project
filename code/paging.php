@@ -3,8 +3,8 @@
 class Paging{
     // page_index：index.phpの何ページ目にいるか
     // page_num：index.phpのページ数
-    // url_params：今いるページのクエリパラメータ
     private int $page_index,$page_num;
+    // url_params：今いるページのクエリパラメータ
     private array $url_params;
 
     function __construct($page_index,$page_num,$url_params){

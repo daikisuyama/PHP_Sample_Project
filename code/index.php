@@ -13,8 +13,10 @@
     <?php
     // エラー表示
     error_reporting(E_ALL);
-    // 関数の読み込み
-    require_once "functions.php";
+    // クラスの読み込み
+    require_once "display.php";
+    require_once "paging.php";
+    require_once "mydb.php";
 
     // GETパラメータ受け取り
     // page_index：検索一覧の何ページ目か（1-indexed）
@@ -44,69 +46,33 @@
     <main>
         <div id="list">
             <?php
-            // 全数取得（SQL）
-            if(is_null($search_word)){
-                $sql="SELECT * FROM posts";
-                $data=[];
-                $dbh=new MyDB_select($sql,$data,"");
-            }else{
-                $sql="SELECT * FROM posts WHERE title LIKE ?";
-                $data=[$search_word];
-                $dbh=new MyDB_select($sql,$data,"s");
-            }
-            $dbh->sql_execute();
-
-            // item_sum:合計のitem数
-            $item_sum=$dbh->get_sum();
-            // page_item_max:ページに表示する最大件数
-            $page_item_max=5;
-            // page_num：合計のページ数
-            $page_num=(int)ceil($item_sum/$page_item_max);
-            // page_item_num：今いるページ（$page_index）に実際に表示する件数
-            $page_item_num=min($page_item_max,$item_sum-$page_item_max*($page_index-1));
-
-            if($page_num==0){
-                // 登録されているToDoがない場合
-                print is_null($search_word) ? "登録されているToDoがありません。<br>" : "該当するToDoがありません。<br>";
+            if(!in_array($sort_which,array("created_at","title","updated_at"),true)){
+                print "存在しないページです。<br>";
                 print '<a href="index.php">一覧へ</a>';
-            }elseif($page_index>$page_num || $page_index<1){
+                exit();
+            }
+            if(is_null($search_word)){
+                $url_params=[$page_index,$search_word,$sort_which];
+                $sql_params=["SELECT * FROM posts",[],""];
+            }else{
+                $url_params=[$page_index,$search_word,$sort_which];
+                $sql_params=["SELECT * FROM posts WHERE title LIKE ?",[$search_word],"s"];
+            }
+            $disp=new Display($url_params,$sql_params);
+
+            if($disp->get_page_num()==0){
+                // 登録されているToDoがない場合
+                print "該当するToDoがありません。<br>";
+                print '<a href="index.php">一覧へ</a>';
+            }elseif($disp->get_page_index()>$disp->get_page_num() || $disp->get_page_index()<1){
                 // 範囲外のページにアクセスしようとした場合
                 print "存在しないページです。<br>";
                 print '<a href="index.php">一覧へ</a>';
                 exit();
             }
 
-            // 一覧表示
-            // ORDER BY句の指定
-            if(in_array($sort_which,array("created_at","title","updated_at"),true)){
-                $sql_order=" ORDER BY {$sort_which} ";
-                $sql_order.= $sort_which==="title" ? "asc": "desc";
-                $sql_order.=", id desc LIMIT ?,?";
-            }else{
-                print "存在しないページです。<br>";
-                print '<a href="index.php">一覧へ</a>';
-                exit();
-            }
-            // SELECT句の指定
-            if(is_null($search_word)){
-                $sql="SELECT * FROM posts";
-                $sql.=$sql_order;
-                $data=[$page_item_max*($page_index-1),$page_item_num];
-                $dbh->set_sql($sql);
-                $dbh->set_data($data);
-                $dbh->set_data_types("ii");
-            }else{
-                $sql="SELECT * FROM posts WHERE title LIKE ?";
-                $sql.=$sql_order;
-                $data=[$search_word,$page_item_max*($page_index-1),$page_item_num];
-                $dbh->set_sql($sql);
-                $dbh->set_data($data);
-                $dbh->set_data_types("sii");
-            }
-            $dbh->sql_execute();
-
             // 一覧の表示
-            while($rec=$dbh->get_record()){
+            while($rec=$disp->get_record()){
                 $id=$rec["id"];
                 $title=$rec["title"];
                 print '<div class="list_item">';
@@ -126,8 +92,8 @@
     <footer id ="paging">
         <?php
         // ページング
-        $url_params=array("page"=>$page_index,"word"=>$search_word,"sort_which"=>$sort_which);
-        $paging=new Paging($page_index,$page_num,$url_params);
+        $url_params=array("page"=>$disp->get_page_index(),"word"=>$disp->get_search_word(),"sort_which"=>$disp->get_sort_which());
+        $paging=new Paging($disp->get_page_index(),$disp->get_page_num(),$url_params);
         $paging->create_paging();
         ?>
     </footer>

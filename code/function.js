@@ -31,16 +31,16 @@ function delete_dialog(){
 // DMOContenがLoadされてから実行しないとおかしなことに
 function sort_page(){
     document.addEventListener('DOMContentLoaded',function(){
-        let sort_which=document.getElementById("sort_which");
-        let search_params=new URLSearchParams(location.search);
+        let sort_which_option=document.getElementById("sort_which");
+        let url_params=new URLSearchParams(location.search);
         sort_which.addEventListener("change",function(){
-            search_params.set("sort_which",sort_which.value);
-            location.href="index.php?"+search_params.toString();
+            url_params.set("sort_which",sort_which.value);
+            location.href="index.php?"+url_params.toString();
         });
-        if(search_params.get("sort_which")===null){
+        if(url_params.get("sort_which")===null){
             sort_which.options[0].selected=true;
         }else{
-            sort_which.options[search_params.get("sort_which")].selected=true;
+            sort_which.querySelector(`option[value='${url_params.get("sort_which")}']`).selected=true;
         }
     });
 }

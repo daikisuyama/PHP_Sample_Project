@@ -13,8 +13,8 @@
         <?php
         // エラー表示
         error_reporting(E_ALL);
-        // 関数の読み込み
-        require_once "functions.php";
+        // クラスの読み込み
+        require_once "mydb.php";
 
         // フォーム受け取り
         $id=$_POST["id"];
