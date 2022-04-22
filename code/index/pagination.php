@@ -16,8 +16,8 @@ class Pagination{
     // 3点ドットの作成
     private function create_ellipsis(){
         echo <<< EOM
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1">…</a>
+        <li class="page-item disabled bg-light">
+            <a class="page-link text-white bg-secondary border-secondary" href="#" tabindex="-1">…</a>
         </li>
         EOM;
     }
@@ -42,13 +42,13 @@ class Pagination{
             if($i===$this->page_index){
                 echo <<< EOM
                 <li class="page-item active">
-                    <a class="page-link" href="{$a_link}">{$i}</a>
+                    <a class="page-link bg-secondary border-secondary" href="{$a_link}">{$i}</a>
                 </li>
                 EOM;
             }else{
                 echo <<< EOM
                 <li class="page-item">
-                    <a class="page-link" href="{$a_link}">{$i}</a>
+                    <a class="page-link text-white bg-secondary border-secondary" href="{$a_link}">{$i}</a>
                 </li>
                 EOM;
             }
@@ -82,18 +82,18 @@ class Pagination{
     }
 
     public function create_pagination(){
-        echo "<nav aria-label='Pagination' class='fixed-bottom'>";
-        echo "<ul class='pagination pagination-lg justify-content-center'>";
         if($this->page_num<=6){
             $this->create_minimum();
         }else{
             $this->create_maximum();
         }
-        echo "</ul>";
-        echo "</nav>";
     }
 }
 $url_params=array("page_index"=>$page_index,"search_word"=>$search_word,"sort_which"=>$sort_which);
 $pagination=new Pagination($disp->get_page_index(),$disp->get_page_num(),$url_params);
-$pagination->create_pagination();
 ?>
+<nav class="fixed-bottom" aria-label="Pagination">
+    <ul class="pagination pagination-lg justify-content-center">
+        <?php $pagination->create_pagination(); ?>
+    </ul>
+</nav>

@@ -14,14 +14,6 @@ function check_dialog(){
     }
 }
 
-// 検索用ダイアログ
-function search_dialog(){
-    let search_word=prompt("検索したい言葉は？","");
-    if(search_word!==null){
-        location.href="index.php?word="+search_word;
-    }
-}
-
 // 削除確認用ダイアログ
 function delete_dialog(){
     return confirm('本当に削除しますか？');

@@ -9,9 +9,11 @@ class Display{
     // item_sum：合計のitem数
     protected int $page_item_max,$page_num,$page_item_num,$item_sum;
     // page_index:今いるページ
-    // search_word：検索ワード
+    protected int $page_index;
+    // search_word：検索ワード、null許容
+    protected $search_word;
     // sort_which：ソート順
-    protected $page_index,$search_word,$sort_which;
+    protected string $sort_which;
     // sql_params：順にsql,data,datatypes
     protected array $sql_params;
 
