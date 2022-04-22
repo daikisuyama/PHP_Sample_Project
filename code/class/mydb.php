@@ -14,7 +14,7 @@ class MyDB{
 
     function __construct($sql,$data,$data_types){
         // データベースへの接続
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        // mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $this->mysqli=@new mysqli("localhost", "root", "", "sample_project");
         if ($this->mysqli->connect_error) {
             error_log('Connection error: '.$this->mysqli->connect_error);
