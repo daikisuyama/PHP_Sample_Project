@@ -2,6 +2,7 @@
 // クラスの読み込み
 require_once "mydb.php";
 class Display{
+    // dbh：データベースハンドル用
     protected MyDB_select $dbh;
     // page_item_max:それぞれのページに表示する最大件数
     // page_num：合計のページ数
@@ -14,19 +15,14 @@ class Display{
     protected $search_word;
     // sort_which：ソート順
     protected string $sort_which;
-    // sql_params：順にsql,data,datatypes
-    protected array $sql_params;
 
-    // search_params：順に$page_index,$search_word,$sort_which
-    function __construct($url_params,$sql_params){
-        list($this->page_index,$this->search_word,$this->sort_which)=$url_params;
-        $this->sql_params=$sql_params;
-        $this->page_params_init();
-        $this->execute();
+    function __construct($page_index,$search_word,$sort_which){
+        $this->page_index=$page_index;
+        $this->search_word=$search_word;
+        $this->sort_which=$sort_which;
     }
 
     protected function page_params_init(){
-        $this->dbh=new MyDB_select(...$this->sql_params);
         $this->dbh->sql_execute();
         $this->item_sum=$this->dbh->get_sum();
         $this->page_item_max=5;
@@ -35,9 +31,9 @@ class Display{
     }
 
     protected function execute(){
-        $sql=$this->sql_params[0].$this->add_sort();
-        $data=array_merge($this->sql_params[1],[$this->page_item_max*($this->page_index-1),$this->page_item_num]);
-        $data_types=$this->sql_params[2]."ii";
+        $sql=$this->dbh->get_sql().$this->add_sort();
+        $data=array_merge($this->dbh->get_data(),[$this->page_item_max*($this->page_index-1),$this->page_item_num]);
+        $data_types=$this->dbh->get_data_types()."ii";
         $this->dbh->set_params($sql,$data,$data_types);
         $this->dbh->sql_execute();
     }
@@ -68,24 +64,21 @@ class Display{
     }
 }
 
-// view.php
-// 一つのToDoを表示
-class View{
-    private MyDB_select $dbh;
-    function __construct($id){
-        $this->execute($id);
+class Index extends Display{
+    function __construct($page_index,$search_word,$sort_which){
+        parent::__construct($page_index,$search_word,$sort_which);
+        $this->dbh=new MyDB_select("SELECT * FROM posts",[],"");
+        parent::page_params_init();
+        parent::execute();
     }
+}
 
-    // SQL文の実行
-    private function execute($id){
-        $sql="SELECT * FROM posts WHERE id=?";
-        $this->dbh=new MyDB_select($sql,[$id],"i");
-        $this->dbh->sql_execute();
-    }
-
-    // ToDoの情報を取得（True or False）
-    public function get_record(){
-        return $this->dbh->get_record();
+class Search extends Display{
+    function __construct($page_index,$search_word,$sort_which){
+        parent::__construct($page_index,$search_word,$sort_which);
+        $this->dbh=new MyDB_select("SELECT * FROM posts WHERE title LIKE ?",[$this->search_word],"s");
+        parent::page_params_init();
+        parent::execute();
     }
 }
 ?>

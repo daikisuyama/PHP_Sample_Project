@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="ja">
-<?php
-$page_title="作成ページ";
-require "head.php";
-?>
+    <?php
+    $page_title="作成ページ";
+    require "head.php";
+    ?>
     <body>
         <div>
             <a href="index.php">一覧へ</a>

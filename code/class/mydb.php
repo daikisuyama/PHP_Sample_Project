@@ -41,12 +41,24 @@ class MyDB{
         $this->sql=$sql;
     }
 
+    public function get_sql(){
+        return $this->sql;
+    }
+
     public function set_data($data){
         $this->data=$data;
     }
 
+    public function get_data(){
+        return $this->data;
+    }
+
     public function set_data_types($data_types){
         $this->data_types=$data_types;
+    }
+
+    public function get_data_types(){
+        return $this->data_types;
     }
 
     public function set_params($sql,$data,$data_types){

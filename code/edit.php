@@ -1,15 +1,13 @@
 <!doctype html>
 <html lang="ja">
     <!-- ヘッド -->
-    <?php require "index/head.php"; ?>
+    <?php require "edit/head.php"; ?>
     <body>
         <div class="container">
             <!-- ナビゲーションバー -->
-            <?php require "index/navbar.php";?>
+            <?php require "edit/navbar.php";?>
             <!-- メインコンテンツ -->
-            <?php require "index/main.php";?>
-            <!-- ページネーション -->
-            <?php require "index/pagination.php";?>
+            <?php require "edit/main.php"; ?>
         </div>
         <!-- Bootstrap for JS -->
         <?php require "bootstrap_js.php"; ?>
