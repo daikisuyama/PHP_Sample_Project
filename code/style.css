@@ -1,16 +1,5 @@
 body{
     background-color: #095d5d;
     padding: 70px 0px;
-}
-.card{
-    opacity: 0.8;
-    background-color: #043434;
-    color: aliceblue;
-}
-.navbar{
-    opacity: 0.8;
-    background-color: rgb(33, 28, 56);
-}
-.col-12{
-    margin: 10px 0px;
+    font-family: "Nunito", "Zen Kaku Gothic New", sans-serif;
 }

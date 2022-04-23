@@ -1,0 +1,14 @@
+.todo_item{
+    opacity: 0.6;
+    background-color: #043434;
+    color: aliceblue;
+    margin-bottom: 20px;
+}
+.todo_col{
+    margin: 10px 0px;
+}
+select{
+    background-color: #095d5d;
+    color: aliceblue;
+    border: 0px;
+}

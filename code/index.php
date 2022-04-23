@@ -4,7 +4,7 @@
     // ヘッド
     require "index/head.php";
     ?>
-    <body class="vh-100 vw-100">
+    <body>
         <div class="container">
             <?php
             // ナビゲーションバー
@@ -13,9 +13,9 @@
             require "index/main.php";
             // ページネーション
             require "index/pagination.php";
-            // Bootstrap for JS
-            require "bootstrap_js.php";
             ?>
         </div>
+        <!-- Bootstrap for JS -->
+        <?php require "bootstrap_js.php"; ?>
     </body>
 </html>

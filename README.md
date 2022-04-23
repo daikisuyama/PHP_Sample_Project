@@ -4,12 +4,13 @@
 
 簡易的なToDoアプリの作成
 
-## 機能のイメージ図
+## イメージ図とサンプル
 
-[イメージ図（index.php）](./image/index.jpg)<br>
-[イメージ図（view.php）](./image/view.jpg)<br>
-[イメージ図（~~edit_check.php~~→edit_confirm.php）](./image/edit_check.jpg)<br>
-[イメージ図（Paging）](./image/paging.png)<br>
+- [イメージ図（index.php）](./image/index.jpg)
+    - [サンプル図（index.php）](./image/sample_index.jpg)
+- [イメージ図（view.php）](./image/view.jpg)
+- [イメージ図（~~edit_check.php~~→edit_confirm.php）](./image/edit_check.jpg)
+- [イメージ図（Paging）](./image/paging.png)
 
 ## プロジェクトのディレクトリ構成
 
