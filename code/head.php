@@ -23,7 +23,6 @@
 // エラー表示
 error_reporting(E_ALL);
 // クラスの読み込み
-require_once "class/display.php";
 require_once "class/mydb.php";
 require_once "error/functions.php";
 ?>
