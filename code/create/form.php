@@ -12,7 +12,7 @@
                 <label for="form_content">Content</label>
                 <textarea type="text" name="content" class="form-control" id="form_content" value="" rows=5></textarea>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-0">
                 <input type="submit" class="btn btn-secondary col-2" value="Submit">
             </div>
         </form>

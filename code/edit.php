@@ -5,7 +5,7 @@
     <body>
         <div class="container">
             <!-- ナビゲーションバー -->
-            <?php require "edit/navbar.php";?>
+            <?php require "default/navbar.php";?>
             <!-- メインコンテンツ -->
             <?php require "edit/main.php"; ?>
         </div>

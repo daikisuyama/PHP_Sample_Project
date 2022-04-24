@@ -4,7 +4,7 @@
     <body>
         <div class="container">
             <!-- ナビゲーションバー -->
-            <?php require "create/navbar.php";?>
+            <?php require "default/navbar.php";?>
             <!-- メインコンテンツ -->
             <?php require "create/main.php"; ?>
         </div>
