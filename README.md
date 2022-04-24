@@ -10,6 +10,7 @@
     - [サンプル図（index.php）](./image/sample_index.jpg)
 - [イメージ図（~~view.php~~→edit.php）](./image/view.jpg)
     - [サンプル図（edit.php）](./image/sample_edit.png)
+    - [サンプル図（create.php）](./image/sample_create.png)
 - [イメージ図（~~edit_check.php~~→edit_confirm.php）](./image/edit_check.jpg)
 - [イメージ図（Paging）](./image/paging.png)
 

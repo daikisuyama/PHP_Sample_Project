@@ -19,12 +19,11 @@
                 err_404();
             }
 
-            // SQLによるUPDATE
-            $sql="UPDATE posts SET title=?,content=?,updated_at=? WHERE id=?";
-            $data=[$title,$content,$updated_at,$id];
-            $dbh=new MyDB_update($sql,$data,"ssss");
-            $dbh->sql_execute();
+            // インスタンスの生成
+            $edit=new Edit([$title,$content,$updated_at,$id]);
+            $is_edit=$edit->get_is_edit();
 
+            // エラー処理
             print '<a href="index.php">一覧へ</a><br>';
             print '<a href="view.php?id='.$id.'">編集画面へ</a><br>';
             print "更新が完了しました<br>";

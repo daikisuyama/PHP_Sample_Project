@@ -1,7 +1,7 @@
 <main class="row">
     <?php
     // インスタンスの生成
-    $view=new View($id);
+    $view=new View([$id]);
 
     // 結果の取得
     $rec=$view->get_record();

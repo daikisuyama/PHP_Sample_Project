@@ -24,5 +24,8 @@
 error_reporting(E_ALL);
 // クラスの読み込み
 require_once "class/mydb.php";
+require_once "class/todo.php";
+require_once "class/display.php";
+require_once "class/pagination.php";
 require_once "error/functions.php";
 ?>

@@ -1,5 +1,9 @@
 <!doctype html>
 <html lang="ja">
+    <?php
+    $page_title="作詞確認用ページ";
+    require "head.php";
+    ?>
     <body>
         <div class="container">
             <main>
@@ -11,20 +15,16 @@
                     $created_at=date("Y-m-d H:i:s");
                     $updated_at=$created_at;
                 }else{
-                    print "存在しないページです。<br>";
-                    print '<a href="index.php">一覧へ</a>';
+                    err_404();
                     exit();
                 }
 
-                // SQLによるINSERT
-                $sql="INSERT INTO posts(title,content,created_at,updated_at) VALUES (?,?,?,?)";
-                $data=[$title,$content,$created_at,$updated_at];
-                $dbh=new MyDB_insert($sql,$data,"ssss");
-                $dbh->sql_execute();
-                $id=$dbh->insert_id();
-
+                // インスタンスの生成
+                $create=new Create([$title,$content,$created_at,$updated_at]);
+                $insert_id=$create->get_insert_id();
+                // エラー処理
                 print '<a href="index.php">一覧へ</a><br>';
-                print '<a href="view.php?id='.$id.'">編集画面へ</a><br>';
+                print '<a href="view.php?id='.$insert_id.'">編集画面へ</a><br>';
                 print "作成が完了しました<br>";
                 ?>
             </main>

@@ -14,7 +14,7 @@ class MyDB{
 
     function __construct($sql,$data,$data_types){
         // データベースへの接続
-        // mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         $this->mysqli=@new mysqli("localhost", "root", "", "sample_project");
         if ($this->mysqli->connect_error) {
             error_log('Connection error: '.$this->mysqli->connect_error);
@@ -73,12 +73,6 @@ class MyDB{
     }
 }
 
-class MyDB_insert extends MyDB{
-    public function insert_id(){
-        return $this->mysqli->insert_id;
-    }
-}
-
 class MyDB_select extends MyDB{
     // 実行結果
     public mysqli_result $result;
@@ -100,7 +94,19 @@ class MyDB_select extends MyDB{
 }
 
 class MyDB_update extends MyDB{
+    // 変更できていればtrue
+    public function sql_execute(){
+        parent::sql_execute();
+        return $this->mysqli->affected_rows!==0;
+    }
+}
 
+class MyDB_insert extends MyDB{
+    // 挿入したToDoのidを返す
+    public function sql_execute(){
+        parent::sql_execute();
+        return $this->mysqli->insert_id;
+    }
 }
 
 class MyDB_delete extends MyDB{
