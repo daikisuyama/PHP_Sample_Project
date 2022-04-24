@@ -9,7 +9,7 @@ $updated_at=$rec["updated_at"]
 <div class="col-12 todo_col">
     <div class="card todo_item p-3">
         <div class="d-flex">
-            <h2>ToDo No.<?= $id ?></h2>
+            <h2 class="card-title">ToDo No.<?= $id ?></h2>
             <!-- 削除ボタン -->
             <form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()" class="ml-4">
                 <input type="submit" class="btn btn-secondary" value="Delete">
@@ -30,7 +30,7 @@ $updated_at=$rec["updated_at"]
                 <p class="mb-0">Created：<?= htmlspecialchars($created_at,ENT_QUOTES,"UTF-8") ?></p>
                 <p class="mb-0">Updataed：<?= htmlspecialchars($updated_at,ENT_QUOTES,"UTF-8") ?></p>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-0">
                 <input type="submit" class="btn btn-secondary col-2" value="Submit">
             </div>  
         </form>

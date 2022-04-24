@@ -8,8 +8,8 @@ $updated_at=$rec["updated_at"]
 <div class="col-12 todo_col">
     <div class="card h-100 todo_item">
         <!-- それぞれのToDoへ -->
-        <div class="card_body h-100">
-            <h2 class="card_title ml-2 mt-2">
+        <div class="card-body h-100 pb-0">
+            <h2 class="card-title mb-0">
                 <?= htmlspecialchars($title,ENT_QUOTES,"UTF-8") ?>
             </h2>
         </div>
