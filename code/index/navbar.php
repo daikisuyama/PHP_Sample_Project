@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md fixed-top navbar-dark p-3">
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
         <!-- App名 -->
         <a class="navbar-brand" href="#">ToDo app</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

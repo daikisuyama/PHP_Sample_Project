@@ -7,7 +7,7 @@
 ## イメージ図とサンプル
 
 - [イメージ図（index.php）](./image/index.jpg)
-    - [サンプル図（index.php）](./image/sample_index.jpg)
+    - [サンプル図（index.php）](./image/sample_index.png)
 - [イメージ図（~~view.php~~→edit.php）](./image/view.jpg)
     - [サンプル図（edit.php）](./image/sample_edit.png)
     - [サンプル図（create.php）](./image/sample_create.png)
