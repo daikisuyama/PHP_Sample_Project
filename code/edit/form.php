@@ -16,7 +16,7 @@ $updated_at=$rec["updated_at"]
             </form>
         </div>
         <!-- 編集欄 -->
-        <form method="POST" action="edit_confirm.php" onsubmit="return check_dialog()">
+        <form method="POST" id="edit_form">
             <input type="hidden" name="id" value="<?= $id ?>">
             <div class="form-group">
                 <label for="form_title">Title</label>

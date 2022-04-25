@@ -30,18 +30,24 @@ class View extends ToDo{
 class Edit extends ToDo{
     protected MyDB_update $dbh;
     private $is_edit;
+    private $id;
 
     // SQL文の実行
     // data（title,content,updated_at,id）
     public function execute($data){
         parent::execute($data);
         $sql="UPDATE posts SET title=?,content=?,updated_at=? WHERE id=?";
+        $this->id=$data[3];
         $this->dbh=new MyDB_update($sql,$data,"ssss");
         $this->is_edit=$this->dbh->sql_execute();
     }
 
     public function get_is_edit(){
-        return $this->is_edit;
+       return $this->is_edit;
+    }
+
+    public function get_id(){
+        return $this->id;
     }
 }
 class Create extends ToDo{

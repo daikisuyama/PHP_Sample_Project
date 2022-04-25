@@ -11,3 +11,4 @@ require_once "error/functions.php";
 // GETパラメータの受け取り
 require "get_params.php";
 ?>
+<script type="text/javascript">edit_form_init();</script>

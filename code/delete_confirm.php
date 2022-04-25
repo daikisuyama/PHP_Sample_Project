@@ -4,6 +4,7 @@
     $page_title="削除確認用ページ";
     require "default/head.php";
     require "class/import.php";
+    require_once "error/functions.php";
     ?>
     <body>
         <main>

@@ -33,9 +33,9 @@ function create_form_init(){
             // レスポンス後の処理
             XHR.addEventListener('readystatechange',()=>{
                 if(XHR.readyState===4 && XHR.status===200) {
-                    post("index.php",{alert_stmt:1,alert_text:XHR.responseText})
+                    post("index.php",{alert_stmt:1,alert_text:XHR.responseText});
                 }else if(XHR.readyState===4){
-                    post("index.php",{alert_stmt:10,alert_text:XHR.responseText})
+                    post("index.php",{alert_stmt:11,alert_text:XHR.responseText});
                 }
             });
         }
@@ -44,12 +44,46 @@ function create_form_init(){
         // formのsubmitイベントを上書き
         form.addEventListener("submit",(event)=>{
             event.preventDefault();
-            create_confirm();
+            if(check_dialog()){
+                create_confirm();
+            }
         });
     });
 }
 
+function edit_form_init(){
+    window.addEventListener("load",()=>{
+        function edit_confirm(){
+            const XHR = new XMLHttpRequest();
+            // FormDataオブジェクトとform要素の紐付け
+            const FD  = new FormData(form);
+            // リクエストの設定
+            XHR.open("POST","edit_confirm.php");
+            // データの送信
+            XHR.send(FD);
+    
+            // レスポンス後の処理
+            XHR.addEventListener('readystatechange',()=>{
+                if(XHR.readyState===4 && XHR.status===200) {
+                    post("index.php",{alert_stmt:2,alert_text:XHR.responseText});
+                }else if(XHR.readyState===4){
+                    post("index.php",{alert_stmt:12,alert_text:XHR.responseText});
+                }
+            });
+        }
+        // form要素の取得
+        const form=document.getElementById("edit_form");
+        // formのsubmitイベントを上書き
+        form.addEventListener("submit",(event)=>{
+            event.preventDefault();
+            if(check_dialog()){
+                edit_confirm();
+            }
+        });
+    });
+}
 
+// このダイアログダサい
 // フォームのバリデーションチェック用ダイアログ（タイトルのみ）
 function check_dialog(){
     let title=document.getElementById("form_title").value;
