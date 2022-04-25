@@ -19,3 +19,6 @@
     <title><?= $page_title; ?></title>
     <script src="default/functions.js"></script>
 </head>
+<?php
+require_once "class/import.php";
+require_once "error/functions.php";

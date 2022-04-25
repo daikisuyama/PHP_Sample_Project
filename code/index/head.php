@@ -1,11 +1,9 @@
 <?php
-$page_title="トップページ";
-require __DIR__."/../default/head.php";
 // エラー表示
 error_reporting(E_ALL);
-// クラスの読み込み
-require_once "class/import.php";
-require_once "error/functions.php";
+// ファイルの読み込み
+$page_title="トップページ";
+require "default/head.php";
 // GETパラメータの受け取り
 require "get_params.php";
 ?>
