@@ -11,7 +11,7 @@ $updated_at=$rec["updated_at"]
         <div class="d-flex">
             <h2 class="card-title">ToDo No.<?= $id ?></h2>
             <!-- 削除ボタン -->
-            <form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()" class="ml-4">
+            <form method="POST" id="delete_form" class="ml-4">
                 <input type="submit" class="btn btn-secondary" value="Delete">
             </form>
         </div>

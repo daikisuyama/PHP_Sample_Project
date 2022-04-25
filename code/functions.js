@@ -26,7 +26,7 @@ function create_form_init(){
             // FormDataオブジェクトとform要素の紐付け
             const FD  = new FormData(form);
             // リクエストの設定
-            XHR.open("POST","create_confirm.php");
+            XHR.open("POST","confirm/create_confirm.php");
             // データの送信
             XHR.send(FD);
     
@@ -58,7 +58,7 @@ function edit_form_init(){
             // FormDataオブジェクトとform要素の紐付け
             const FD  = new FormData(form);
             // リクエストの設定
-            XHR.open("POST","edit_confirm.php");
+            XHR.open("POST","confirm/edit_confirm.php");
             // データの送信
             XHR.send(FD);
     
@@ -83,6 +83,38 @@ function edit_form_init(){
     });
 }
 
+function delete_form_init(){
+    window.addEventListener("load",()=>{
+        function delete_confirm(){
+            const XHR = new XMLHttpRequest();
+            // FormDataオブジェクトとform要素の紐付け
+            const FD  = new FormData(form);
+            // リクエストの設定
+            XHR.open("POST","confirm/delete_confirm.php");
+            // データの送信
+            XHR.send(FD);
+    
+            // レスポンス後の処理
+            XHR.addEventListener('readystatechange',()=>{
+                if(XHR.readyState===4 && XHR.status===200) {
+                    post("index.php",{alert_stmt:3,alert_text:XHR.responseText});
+                }else if(XHR.readyState===4){
+                    post("index.php",{alert_stmt:13,alert_text:XHR.responseText});
+                }
+            });
+        }
+        // form要素の取得
+        const form=document.getElementById("delete_form");
+        // formのsubmitイベントを上書き
+        form.addEventListener("submit",(event)=>{
+            event.preventDefault();
+            if(delete_dialog()){
+                delete_confirm();
+            }
+        });
+    });
+}
+
 // このダイアログダサい
 // フォームのバリデーションチェック用ダイアログ（タイトルのみ）
 function check_dialog(){
@@ -101,10 +133,6 @@ function check_dialog(){
 // 削除確認用ダイアログ
 function delete_dialog(){
     return confirm('本当に削除しますか？');
-}
-
-function send_edit_form(){
-
 }
 
 function post(path, params, method='post') {

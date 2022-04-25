@@ -30,7 +30,6 @@ class View extends ToDo{
 class Edit extends ToDo{
     protected MyDB_update $dbh;
     private $is_edit;
-    private $id;
 
     // SQL文の実行
     // data（title,content,updated_at,id）
@@ -44,10 +43,6 @@ class Edit extends ToDo{
 
     public function get_is_edit(){
        return $this->is_edit;
-    }
-
-    public function get_id(){
-        return $this->id;
     }
 }
 class Create extends ToDo{
@@ -82,4 +77,3 @@ class Delete extends Todo{
         return $this->is_delete;
     }
 }
-?>

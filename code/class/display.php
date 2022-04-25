@@ -81,4 +81,3 @@ class Search extends Display{
         parent::execute();
     }
 }
-?>

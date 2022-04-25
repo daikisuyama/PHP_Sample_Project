@@ -16,4 +16,3 @@ if(is_null($sort_which)){
 }elseif(!in_array($sort_which,array("created_at","title","updated_at"),true)){
     err_404();
 }
-?>

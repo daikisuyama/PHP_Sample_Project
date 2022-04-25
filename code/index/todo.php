@@ -27,7 +27,7 @@ $updated_at=$rec["updated_at"]
                 <button type="submit" class="btn btn-secondary mr-2">View</button>
             </form>
             <!-- 削除ボタン -->
-            <form method="POST" action="delete_confirm.php" onsubmit="return delete_dialog()" class="mt-auto">
+            <form method="POST" id="delete_form" class="mt-auto">
                 <input type="hidden" name="id" value="<?= $id; ?>">
                 <input type="submit" class="btn btn-secondary mr-2" value="Delete">
             </form>

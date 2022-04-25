@@ -10,7 +10,11 @@ if(isset($_POST["alert_stmt"])){
     }elseif($alert_stmt==="2"){
         $alert_message="<a class='alert-link' href='edit.php?id={$alert_text}'>ToDo No.{$alert_text}</a> is updated!";
     }elseif($alert_stmt==="12"){
-        $alert_message="ToDo is not updated...";
+        $alert_message="<a class='alert-link' href='edit.php?id={$alert_text}'>ToDo No.{$alert_text}</a> is not updated...";
+    }elseif($alert_stmt==="3"){
+        $alert_message="ToDo No.{$alert_text} is deleted!";
+    }elseif($alert_stmt==="13"){
+        $alert_message="<a class='alert-link' href='edit.php?id={$alert_text}'>ToDo No.{$alert_text}</a> is not deleted...";
     }
 
     echo <<< EOM
@@ -22,4 +26,3 @@ if(isset($_POST["alert_stmt"])){
     </div>
     EOM;
 }
-?>

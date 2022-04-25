@@ -10,3 +10,4 @@ require_once "error/functions.php";
 require "get_params.php";
 ?>
 <script type="text/javascript">sort_page_init();</script>
+<script type="text/javascript">delete_form_init();</script>

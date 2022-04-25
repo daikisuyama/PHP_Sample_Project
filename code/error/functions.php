@@ -12,4 +12,3 @@ function err_no_item(){
     echo '<a href="index.php">一覧へ</a>';
     exit();
 }
-?>

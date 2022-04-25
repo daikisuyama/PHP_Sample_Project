@@ -116,4 +116,3 @@ class MyDB_delete extends MyDB{
         return $this->mysqli->affected_rows!==0;
     }
 }
-?>
