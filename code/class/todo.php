@@ -1,4 +1,3 @@
-<!-- viewとcreateをまとめる？ -->
 <?php
 require_once "mydb.php";
 class Todo{

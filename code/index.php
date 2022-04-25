@@ -4,6 +4,8 @@
     <?php require "index/head.php"; ?>
     <body>
         <div class="container">
+            <!-- アラート -->
+            <?php require "index/alert.php";?>
             <!-- ナビゲーションバー -->
             <?php require "index/navbar.php";?>
             <!-- メインコンテンツ -->

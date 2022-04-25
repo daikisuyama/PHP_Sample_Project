@@ -8,3 +8,4 @@ error_reporting(E_ALL);
 require_once "class/import.php";
 require_once "error/functions.php";
 ?>
+<script type="text/javascript">create_form_init();</script>

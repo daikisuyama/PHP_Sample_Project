@@ -9,4 +9,4 @@ require_once "error/functions.php";
 // GETパラメータの受け取り
 require "get_params.php";
 ?>
-<script type="text/javascript">sort_page();</script>
+<script type="text/javascript">sort_page_init();</script>

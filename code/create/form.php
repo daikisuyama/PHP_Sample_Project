@@ -3,7 +3,7 @@
         <!-- ToDo -->
         <h2 class="card-title">ToDo No. ?</h2>
         <!-- 作成欄 -->
-        <form method="POST" action="create_confirm.php" onsubmit="return check_dialog()">
+        <form method="POST" id="create_form">
             <div class="form-group">
                 <label for="form_title">Title</label>
                 <input type="text" name="title" class="form-control" id="form_title" value="">

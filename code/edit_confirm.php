@@ -2,7 +2,8 @@
 <html lang="ja">
     <?php
     $page_title="編集確認用ページ";
-    require "head.php";
+    require "default/head.php";
+    require "class/import.php";
     ?>
     <body>
         <main>
