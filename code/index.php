@@ -14,6 +14,6 @@
             <?php require "index/pagination.php";?>
         </div>
         <!-- Bootstrap for JS -->
-        <?php require "bootstrap_js.php"; ?>
+        <?php require "default/bootstrap_js.php"; ?>
     </body>
 </html>

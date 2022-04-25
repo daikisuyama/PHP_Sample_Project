@@ -17,5 +17,5 @@
     <!-- Options -->
     <link href="default/style.css" rel="stylesheet">
     <title><?= $page_title; ?></title>
-    <script src="functions.js"></script>
+    <script src="default/functions.js"></script>
 </head>
